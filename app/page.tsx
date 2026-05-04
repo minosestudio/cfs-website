@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import {
   motion,
@@ -35,12 +36,15 @@ function Navbar() {
           : "1px solid transparent",
       }}
     >
-      <a
-        href="#"
-        className="text-[11px] tracking-[0.45em] text-[#F5F1EB] uppercase shrink-0"
-        style={{ fontFamily: "var(--font-playfair)", letterSpacing: "0.45em" }}
-      >
-        CFS
+      <a href="#" className="shrink-0">
+        <Image
+          src="/logo.png"
+          alt="CFS"
+          width={120}
+          height={48}
+          className="h-10 md:h-12 w-auto object-contain"
+          priority
+        />
       </a>
 
       <div className="hidden md:flex items-center gap-10 lg:gap-12">
@@ -371,7 +375,7 @@ function OurCollection() {
     <section
       ref={sectionRef}
       id="collection"
-      className="relative bg-[#0E0E0E] pt-32 pb-44 px-6 md:px-16 lg:px-24"
+      className="relative bg-[#0E0E0E] pt-[102px] pb-[140px] px-6 md:px-16 lg:px-24"
     >
       {/* Section header */}
       <FadeIn className="mb-16 text-center">
@@ -633,7 +637,7 @@ function OurExpertise() {
   return (
     <section
       id="expertise"
-      className="bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-36 pb-44"
+      className="bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-[115px] pb-[140px]"
     >
       {/* Header */}
       <FadeIn className="max-w-[1400px] mx-auto mb-24">
@@ -664,7 +668,7 @@ function OurExpertise() {
             <div key={svc.id}>
               {/* Clickable row */}
               <motion.div
-                className="py-14 md:py-16 cursor-pointer group"
+                className="py-10 md:py-11 cursor-pointer group"
                 onClick={() => toggle(svc.id)}
                 whileHover="hovered"
               >
@@ -914,7 +918,7 @@ function FeaturedWork() {
   return (
     <section
       id="projects"
-      className="relative bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-32 pb-44"
+      className="relative bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-[102px] pb-[140px]"
     >
       {/* Header */}
       <FadeIn className="mb-20 max-w-[1400px] mx-auto">
@@ -1217,7 +1221,7 @@ function PeopleSection() {
   return (
     <section
       id="people"
-      className="relative bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-36 pb-48"
+      className="relative bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-[115px] pb-[154px]"
     >
       {/* Header */}
       <FadeIn className="max-w-[1400px] mx-auto mb-28">
@@ -1269,6 +1273,7 @@ function PeopleSection() {
                     src={member.src}
                     alt={member.name}
                     className="w-full h-full object-cover object-top"
+                    style={{ filter: "grayscale(100%)" }}
                     whileHover={{ scale: 1.03 }}
                     transition={{ duration: 0.85, ease: EASE }}
                   />
@@ -1435,7 +1440,7 @@ function TestimonialsSection() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden py-40 px-6 md:px-16 lg:px-24"
+      className="relative overflow-hidden py-32 px-6 md:px-16 lg:px-24"
     >
       {TESTIMONIALS.map((item, i) => (
         <motion.div
@@ -1626,7 +1631,7 @@ function CatalogueSection() {
     <section
       ref={sectionRef}
       id="catalogue"
-      className="relative py-44 px-6 md:px-16 lg:px-24 border-t border-[#1A1A1A] overflow-hidden"
+      className="relative py-[140px] px-6 md:px-16 lg:px-24 border-t border-[#1A1A1A] overflow-hidden"
     >
       <div className="max-w-[1380px] mx-auto grid lg:grid-cols-2 gap-24 lg:gap-40 items-start">
 
@@ -1813,7 +1818,7 @@ function ContactSection() {
     <section
       ref={ref}
       id="contact"
-      className="relative py-[140px] px-6 md:px-16 lg:px-24 overflow-hidden"
+      className="relative py-28 px-6 md:px-16 lg:px-24 overflow-hidden"
     >
       <div
         className="absolute inset-0 pointer-events-none"
@@ -1871,7 +1876,7 @@ function ContactSection() {
           >
             {/* LEFT — Email */}
             <div
-              className="px-10 py-14 lg:px-14 lg:py-16 flex flex-col gap-6"
+              className="px-10 py-14 lg:px-14 lg:py-16 flex flex-col gap-6 items-center text-center"
               onMouseEnter={() => setEmailHovered(true)}
               onMouseLeave={() => setEmailHovered(false)}
             >
@@ -1880,7 +1885,7 @@ function ContactSection() {
               </p>
               <a
                 href="mailto:chinacfsourcing.info@gmail.com"
-                className="relative inline-block self-start"
+                className="relative inline-block"
               >
                 <motion.span
                   className="block font-light text-[#F5F1EB]"
@@ -1918,7 +1923,7 @@ function ContactSection() {
 
             {/* RIGHT — Phone */}
             <div
-              className="px-10 py-14 lg:px-14 lg:py-16 flex flex-col gap-6"
+              className="px-10 py-14 lg:px-14 lg:py-16 flex flex-col gap-6 items-center text-center"
               onMouseEnter={() => setPhoneHovered(true)}
               onMouseLeave={() => setPhoneHovered(false)}
             >
@@ -1973,21 +1978,13 @@ function FooterSection() {
 
         {/* LEFT — Brand */}
         <div className="flex flex-col gap-6">
-          <div
-            className="w-8 h-8 border flex items-center justify-center shrink-0"
-            style={{ borderColor: "#BFA37A", borderWidth: "0.75px" }}
-          >
-            <span
-              style={{
-                fontFamily: "var(--font-playfair)",
-                fontSize: "0.55rem",
-                letterSpacing: "0.08em",
-                color: "#BFA37A",
-              }}
-            >
-              CFS
-            </span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="CFS"
+            width={80}
+            height={32}
+            className="h-8 w-auto object-contain self-start"
+          />
           <p
             className="text-[#F5F1EB] uppercase font-light"
             style={{ fontSize: "0.7rem", letterSpacing: "0.22em" }}
@@ -2214,7 +2211,7 @@ export default function Home() {
       </section>
 
       {/* ── STATS ─────────────────────────────────────────── */}
-      <section className="relative bg-[#0E0E0E] py-[120px] px-6 md:px-16 lg:px-24">
+      <section className="relative bg-[#0E0E0E] py-24 px-6 md:px-16 lg:px-24">
         <div className="max-w-[1400px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-y-16 gap-x-8">
           {[
             { to: 500,   suffix: "+", label: "Verified Manufacturers" },
@@ -2246,7 +2243,7 @@ export default function Home() {
       </section>
 
       {/* ── 2. BRAND STATEMENT ────────────────────────────── */}
-      <section className="px-6 md:px-20 py-40 max-w-3xl mx-auto text-center">
+      <section className="px-6 md:px-20 py-32 max-w-3xl mx-auto text-center">
         <FadeIn>
           <p
             className="text-[#A8A8A8] leading-[2.4] font-light"
@@ -2281,7 +2278,7 @@ export default function Home() {
       <TestimonialsSection />
 
       {/* ── 4. IMAGE + TEXT SPLIT ─────────────────────────── */}
-      <section className="px-6 md:px-16 lg:px-24 py-40 grid md:grid-cols-2 gap-16 lg:gap-28 items-center max-w-[1400px] mx-auto">
+      <section className="px-6 md:px-16 lg:px-24 py-32 grid md:grid-cols-2 gap-16 lg:gap-28 items-center max-w-[1400px] mx-auto">
         <FadeIn delay={0.1}>
           <div className="overflow-hidden">
             <motion.img
@@ -2324,7 +2321,7 @@ export default function Home() {
       </section>
 
       {/* ── 5. CAPABILITIES ───────────────────────────────── */}
-      <section id="capabilities" className="px-6 md:px-16 lg:px-24 py-40 max-w-[1400px] mx-auto">
+      <section id="capabilities" className="px-6 md:px-16 lg:px-24 py-32 max-w-[1400px] mx-auto">
         <FadeIn className="mb-20 text-center">
           <p className="text-[10px] tracking-[0.45em] text-[#BFA37A] uppercase mb-5">
             Offerings
@@ -2374,7 +2371,7 @@ export default function Home() {
       </section>
 
       {/* ── 6. PROCESS ────────────────────────────────────── */}
-      <section id="process" className="px-6 md:px-16 lg:px-24 py-40 max-w-[1400px] mx-auto">
+      <section id="process" className="px-6 md:px-16 lg:px-24 py-32 max-w-[1400px] mx-auto">
         <FadeIn className="text-center mb-24">
           <p className="text-[10px] tracking-[0.45em] text-[#BFA37A] uppercase mb-5">
             How We Work
@@ -2433,7 +2430,7 @@ export default function Home() {
       </FadeIn>
 
       {/* ── 7. GLOBAL PRESENCE ────────────────────────────── */}
-      <section className="py-48 text-center px-6">
+      <section className="py-[154px] text-center px-6">
         <FadeIn>
           <p className="text-[10px] tracking-[0.5em] text-[#BFA37A] uppercase mb-10">
             Reach
