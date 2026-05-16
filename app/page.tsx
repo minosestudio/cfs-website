@@ -568,9 +568,9 @@ const SERVICES = [
     id: "sourcing",
     num: "01",
     heading: "Factory Sourcing",
-    tagline: "Direct access to our network of 500+ verified manufacturers.",
+    tagline: "Direct access to our network of 90+ verified manufacturers.",
     description:
-      "We maintain deep relationships with over 500 vetted factories across China's key manufacturing regions — from Foshan's furniture belt to Guangdong's upholstery specialists. Our introductions are warm, not cold: every factory we present has been visited, audited, and benchmarked against your specific brief.",
+      "We maintain deep relationships with over 90 vetted factories across China's key manufacturing regions — from Foshan's furniture belt to Guangdong's upholstery specialists. Our introductions are warm, not cold: every factory we present has been visited, audited, and benchmarked against your specific brief.",
     subServices: [
       "Factory introductions & negotiations",
       "MOQ guidance",
@@ -2092,7 +2092,7 @@ export default function Home() {
       <Navbar />
 
       {/* ── 1. HERO ───────────────────────────────────────── */}
-      <section className="relative h-screen min-h-[640px] overflow-hidden select-none">
+      <section className="relative h-[115vh] min-h-[760px] overflow-hidden select-none">
 
         <motion.div
           initial={{ scale: 1.06 }}
@@ -2133,13 +2133,29 @@ export default function Home() {
               color: "#F5F1EB",
             }}
           >
-            Luxury Furniture
+            Global Sourcing
           </motion.h1>
 
           <motion.h1
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, delay: 0.72, ease: EASE }}
+            transition={{ duration: 1.5, delay: 0.65, ease: EASE }}
+            style={{
+              fontFamily: "var(--font-playfair)",
+              fontWeight: 400,
+              fontSize: "clamp(2.6rem, 5.2vw, 5.2rem)",
+              lineHeight: 1.1,
+              letterSpacing: "0.01em",
+              color: "#F5F1EB",
+            }}
+          >
+            &amp;
+          </motion.h1>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, delay: 0.75, ease: EASE }}
             style={{
               fontFamily: "var(--font-playfair)",
               fontWeight: 400,
@@ -2150,18 +2166,27 @@ export default function Home() {
               color: "#BFA37A",
             }}
           >
-            Sourcing from China
+            logistic solution.
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.3, delay: 0.95, ease: EASE }}
-            className="mt-7 text-[13px] text-[#A8A8A8] font-light leading-[1.95] max-w-[400px]"
+            className="mt-8 text-[8px] tracking-[0.45em] text-[#BFA37A] uppercase"
           >
-            Connecting global buyers with verified manufacturers — delivering
-            precision-made furniture for architects, designers, and high-end
-            residential projects worldwide.
+            Complete Interior Solutions
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.3, delay: 1.05, ease: EASE }}
+            className="mt-3 text-[13px] text-[#A8A8A8] font-light leading-[1.95] max-w-[420px]"
+          >
+            CFS is a global furniture sourcing company with in-house
+            manufacturing capabilities, delivering quality, reliability,
+            and design excellence worldwide.
           </motion.p>
 
           <motion.div
@@ -2182,14 +2207,15 @@ export default function Home() {
               Request Private Catalogue
             </motion.a>
 
-            <motion.button
+            <motion.a
+              href="#collection"
               whileHover={{ backgroundColor: "rgba(245,241,235,0.07)", borderColor: "rgba(245,241,235,0.4)" }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.3 }}
               className="border border-[#F5F1EB]/20 px-8 py-3.5 text-[9px] tracking-[0.45em] text-[#A8A8A8] uppercase font-light cursor-pointer whitespace-nowrap"
             >
               Explore Collection
-            </motion.button>
+            </motion.a>
           </motion.div>
         </div>
 
@@ -2216,8 +2242,8 @@ export default function Home() {
       <section className="relative bg-[#0E0E0E] py-24 px-6 md:px-16 lg:px-24">
         <div className="max-w-[1400px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-y-16 gap-x-8">
           {[
-            { to: 500,   suffix: "+", label: "Verified Manufacturers" },
-            { to: 12,    suffix: "+", label: "Countries Served"       },
+            { to: 90,    suffix: "+", label: "Verified Manufacturers" },
+            { to: 6,     suffix: "+", label: "Countries Served"       },
             { to: 10000, suffix: "+", label: "Pieces Delivered"       },
             { to: 100,   suffix: "%", label: "Quality Assured"        },
           ].map((stat, i) => (
@@ -2255,9 +2281,11 @@ export default function Home() {
               fontSize: "clamp(1.1rem, 2vw, 1.35rem)",
             }}
           >
-            CFS is a design-led global furniture manufacturer delivering luxury
-            furniture with precision, control, and consistency — built for
-            architects, designers, and high-end clients worldwide.
+            We are a global furniture sourcing company with in-house manufacturing
+            and end-to-end logistics capabilities. Delivering bespoke furniture
+            solutions with precision, quality, reliability, and seamless worldwide
+            fulfillment for luxury residential, hospitality, retail, and commercial
+            projects.
           </p>
         </FadeIn>
       </section>
