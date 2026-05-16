@@ -65,7 +65,9 @@ function Navbar() {
       </div>
 
       <motion.a
-        href="#cta"
+        href="https://wa.me/8618688246482"
+        target="_blank"
+        rel="noopener noreferrer"
         whileHover={{ backgroundColor: "#BFA37A", borderColor: "#BFA37A", color: "#0E0E0E" }}
         transition={{ duration: 0.3, ease: EASE }}
         className="hidden md:inline-flex items-center border border-[#BFA37A] px-6 py-2.5 text-[9px] tracking-[0.4em] text-[#BFA37A] uppercase font-light cursor-pointer shrink-0"
@@ -135,40 +137,37 @@ function CountUp({ to, suffix }: { to: number; suffix: string }) {
 }
 
 /* ── Static data ─────────────────────────────────────────── */
-const capabilities = [
+
+const processSteps = [
   {
     num: "01",
-    title: "Living Systems",
-    desc: "Sofas, lounge chairs, occasional pieces — curated for the architecture of living.",
+    title: "Consultation & Briefing",
+    desc: "We begin by understanding your project scope, design language, and sourcing expectations to create a tailored procurement roadmap.",
+    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=85",
   },
   {
     num: "02",
-    title: "Dining & Bedrooms",
-    desc: "Tables, beds, and case goods crafted for permanence and quiet presence.",
+    title: "China Factory Coordination",
+    desc: "Direct coordination with verified manufacturing partners across Foshan and key production hubs in China.",
+    img: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1200&q=85",
   },
   {
     num: "03",
-    title: "Custom Execution",
-    desc: "Bespoke manufacturing from concept to delivery — engineered to your specification.",
-  },
-];
-
-const process = [
-  {
-    step: "Design Alignment",
-    desc: "We begin by understanding the vision — your brief, your client, your space.",
+    title: "Product Development & Selection",
+    desc: "From custom furniture to curated catalog selections, every detail is refined for your project requirements.",
+    img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=85",
   },
   {
-    step: "Material Selection",
-    desc: "Guided curation of materials, finishes, and hardware from our global network.",
+    num: "04",
+    title: "Quality Control & Logistics",
+    desc: "Every order undergoes production monitoring, inspection, secure packaging, and international shipping coordination.",
+    img: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=85",
   },
   {
-    step: "Manufacturing Control",
-    desc: "Direct oversight of production. No compromises on quality or timing.",
-  },
-  {
-    step: "Global Delivery",
-    desc: "White-glove logistics to any destination. Every piece arrives as intended.",
+    num: "05",
+    title: "Installation & After-Sales Support",
+    desc: "End-to-end execution support including delivery coordination, installation guidance, and post-project assistance.",
+    img: "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=85",
   },
 ];
 
@@ -2171,14 +2170,17 @@ export default function Home() {
             transition={{ duration: 1.3, delay: 1.2, ease: EASE }}
             className="mt-10 flex flex-col sm:flex-row gap-4"
           >
-            <motion.button
+            <motion.a
+              href="https://wa.me/8618688246482"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ backgroundColor: "#BFA37A", borderColor: "#BFA37A", color: "#0E0E0E" }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.3 }}
               className="border border-[#BFA37A] px-8 py-3.5 text-[9px] tracking-[0.45em] text-[#F5F1EB] uppercase font-light cursor-pointer whitespace-nowrap"
             >
               Request Private Catalogue
-            </motion.button>
+            </motion.a>
 
             <motion.button
               whileHover={{ backgroundColor: "rgba(245,241,235,0.07)", borderColor: "rgba(245,241,235,0.4)" }}
@@ -2277,180 +2279,147 @@ export default function Home() {
       {/* ── 3e. CLIENT VOICE ──────────────────────────────── */}
       <TestimonialsSection />
 
-      {/* ── 4. IMAGE + TEXT SPLIT ─────────────────────────── */}
-      <section className="px-6 md:px-16 lg:px-24 py-32 grid md:grid-cols-2 gap-16 lg:gap-28 items-center max-w-[1400px] mx-auto">
-        <FadeIn delay={0.1}>
-          <div className="overflow-hidden">
-            <motion.img
-              whileHover={{ scale: 1.04 }}
-              transition={{ duration: 1, ease: EASE }}
-              src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&q=85"
-              alt="Luxury interior"
-              className="w-full h-[55vh] md:h-[70vh] object-cover"
-            />
-          </div>
-        </FadeIn>
-
-        <FadeIn delay={0.3} className="flex flex-col gap-8">
-          <p className="text-[10px] tracking-[0.45em] text-[#BFA37A] uppercase">
-            Materials &amp; Craft
-          </p>
-          <h2
-            className="text-[#F5F1EB] leading-[1.25]"
-            style={{
-              fontFamily: "var(--font-cormorant)",
-              fontWeight: 300,
-              fontSize: "clamp(2rem, 4vw, 3rem)",
-              letterSpacing: "0.04em",
-            }}
-          >
-            Designed for the
-            <br />
-            <em>Discerning Eye</em>
-          </h2>
-          <p className="text-[#A8A8A8] text-sm leading-[2.2] font-light max-w-sm">
-            Every piece is built with a deep focus on materials, proportions,
-            and long-term durability — designed for high-end global spaces.
-          </p>
-          <p className="text-[#A8A8A8] text-sm leading-[2.2] font-light max-w-sm">
-            We work directly with a curated network of artisans and
-            manufacturers, ensuring every detail meets the standard our clients
-            expect.
-          </p>
-        </FadeIn>
-      </section>
-
-      {/* ── 5. CAPABILITIES ───────────────────────────────── */}
-      <section id="capabilities" className="px-6 md:px-16 lg:px-24 py-32 max-w-[1400px] mx-auto">
-        <FadeIn className="mb-20 text-center">
-          <p className="text-[10px] tracking-[0.45em] text-[#BFA37A] uppercase mb-5">
-            Offerings
-          </p>
-          <h2
-            className="text-[#F5F1EB]"
-            style={{
-              fontFamily: "var(--font-cormorant)",
-              fontWeight: 300,
-              fontSize: "clamp(2rem, 4vw, 2.8rem)",
-              letterSpacing: "0.12em",
-            }}
-          >
-            Capabilities
-          </h2>
-        </FadeIn>
-
-        <div className="grid md:grid-cols-3 gap-px bg-[#1C1C1C]">
-          {capabilities.map((item, i) => (
-            <FadeIn key={i} delay={i * 0.12}>
-              <motion.div
-                whileHover={{ backgroundColor: "#161616" }}
-                transition={{ duration: 0.5 }}
-                className="bg-[#121212] p-14 lg:p-16 flex flex-col gap-8 h-full cursor-default"
-              >
-                <span className="text-[10px] tracking-[0.35em] text-[#BFA37A]">
-                  {item.num}
-                </span>
-                <h3
-                  className="text-[#F5F1EB]"
-                  style={{
-                    fontFamily: "var(--font-cormorant)",
-                    fontWeight: 300,
-                    fontSize: "1.3rem",
-                    letterSpacing: "0.1em",
-                  }}
-                >
-                  {item.title}
-                </h3>
-                <p className="text-[#A8A8A8] text-sm leading-[2.1] font-light">
-                  {item.desc}
-                </p>
-              </motion.div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
-
       {/* ── 6. PROCESS ────────────────────────────────────── */}
-      <section id="process" className="px-6 md:px-16 lg:px-24 py-32 max-w-[1400px] mx-auto">
-        <FadeIn className="text-center mb-24">
-          <p className="text-[10px] tracking-[0.45em] text-[#BFA37A] uppercase mb-5">
-            How We Work
-          </p>
-          <h2
-            className="text-[#F5F1EB]"
-            style={{
-              fontFamily: "var(--font-cormorant)",
-              fontWeight: 300,
-              fontSize: "clamp(2rem, 4vw, 2.8rem)",
-              letterSpacing: "0.12em",
-            }}
-          >
-            Our Process
-          </h2>
-        </FadeIn>
+      <section id="process" className="bg-[#080808] border-t border-white/[0.04]">
 
-        <div className="grid md:grid-cols-4 gap-px bg-[#1C1C1C]">
-          {process.map((item, i) => (
-            <FadeIn key={i} delay={i * 0.1}>
-              <div className="bg-[#121212] p-10 lg:p-12 flex flex-col gap-6 h-full">
-                <span className="text-[10px] tracking-[0.35em] text-[#BFA37A]">
-                  0{i + 1}
-                </span>
-                <h3
-                  className="text-[#F5F1EB]"
-                  style={{
-                    fontFamily: "var(--font-cormorant)",
-                    fontWeight: 300,
-                    fontSize: "1.15rem",
-                    letterSpacing: "0.08em",
-                  }}
+        {/* Header */}
+        <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 pt-28 pb-16">
+          <FadeIn>
+            <p className="text-[9px] tracking-[0.55em] uppercase mb-7" style={{ color: "#5A5350" }}>
+              How We Work
+            </p>
+            <h2
+              style={{
+                fontFamily: "var(--font-cormorant)",
+                fontWeight: 300,
+                fontSize: "clamp(2.6rem, 5vw, 4rem)",
+                letterSpacing: "0.04em",
+                color: "#F5F1EB",
+                lineHeight: 1.1,
+              }}
+            >
+              Five steps.<br />
+              <em>Zero loose ends.</em>
+            </h2>
+          </FadeIn>
+        </div>
+
+        {/* Editorial Steps */}
+        <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 pb-28">
+          {processSteps.map((step, i) => {
+            const isEven = i % 2 === 0;
+            const stepIcons = [
+              <svg key="s0" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><circle cx="11" cy="11" r="9"/><line x1="6" y1="9" x2="16" y2="9"/><line x1="6" y1="13" x2="12" y2="13"/></svg>,
+              <svg key="s1" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><line x1="2" y1="19" x2="20" y2="19"/><rect x="4" y="9" width="4" height="10"/><rect x="14" y="12" width="4" height="7"/><line x1="11" y1="2" x2="11" y2="9"/><polyline points="8.5,4.5 11,2 13.5,4.5"/></svg>,
+              <svg key="s2" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><polygon points="11,1 21,11 11,21 1,11"/><line x1="11" y1="1" x2="11" y2="21"/><line x1="1" y1="11" x2="21" y2="11"/></svg>,
+              <svg key="s3" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><path d="M11 2 L19 5.5 L19 11.5 C19 16.2 15.5 19.5 11 21 C6.5 19.5 3 16.2 3 11.5 L3 5.5 Z"/><polyline points="7,11 10,14 15,8.5"/></svg>,
+              <svg key="s4" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><circle cx="11" cy="11" r="9"/><polyline points="11,5 11,11 15,14"/></svg>,
+            ];
+            return (
+              <FadeIn key={i} delay={i * 0.07}>
+                <div
+                  className={`border-t border-white/[0.05] flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-8 md:gap-14 py-10 md:py-14 group`}
                 >
-                  {item.step}
-                </h3>
-                <p className="text-[#A8A8A8] text-sm leading-[2.1] font-light">
-                  {item.desc}
-                </p>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
+                  {/* Image card */}
+                  <div
+                    className="relative overflow-hidden shrink-0 w-full md:w-[38%] border border-white/[0.05]"
+                    style={{ height: "260px", borderRadius: "2px" }}
+                  >
+                    <motion.img
+                      src={step.img}
+                      alt={step.title}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.06 }}
+                      transition={{ duration: 1.6, ease: EASE }}
+                      style={{ filter: "brightness(0.68) contrast(1.1) saturate(0.8)" }}
+                    />
+                    {/* Subtle vignette */}
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={{ background: "linear-gradient(to bottom, rgba(8,8,8,0.18) 0%, transparent 30%, transparent 65%, rgba(8,8,8,0.45) 100%)" }}
+                    />
+                    {/* Ghost number — small, bottom corner */}
+                    <div className="absolute bottom-3 right-4 pointer-events-none select-none">
+                      <span
+                        style={{
+                          fontFamily: "var(--font-cormorant)",
+                          fontWeight: 300,
+                          fontSize: "3.5rem",
+                          color: "rgba(200, 165, 110, 0.09)",
+                          lineHeight: 1,
+                          letterSpacing: "-0.02em",
+                        }}
+                      >
+                        {step.num}
+                      </span>
+                    </div>
+                  </div>
 
-      {/* ── CINEMATIC IMAGE ───────────────────────────────── */}
-      <FadeIn className="px-6 md:px-16 lg:px-24 py-6 max-w-[1400px] mx-auto">
-        <div className="overflow-hidden">
-          <motion.img
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 1.2, ease: EASE }}
-            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1800&q=85"
-            alt="Luxury living space"
-            className="w-full h-[55vh] md:h-[72vh] object-cover"
-          />
-        </div>
-      </FadeIn>
+                  {/* Content */}
+                  <div className="flex flex-col flex-1 min-w-0">
+                    {/* Decorative number — warm bronze ghost */}
+                    <p
+                      className="mb-3 leading-none select-none"
+                      style={{
+                        fontFamily: "var(--font-cormorant)",
+                        fontSize: "clamp(2.8rem, 4.5vw, 4rem)",
+                        fontWeight: 300,
+                        color: "rgba(162, 134, 94, 0.22)",
+                        letterSpacing: "0.02em",
+                        textShadow: "0 0 60px rgba(190, 155, 100, 0.12), 0 0 120px rgba(190, 155, 100, 0.06)",
+                      }}
+                    >
+                      {step.num}
+                    </p>
 
-      {/* ── 7. GLOBAL PRESENCE ────────────────────────────── */}
-      <section className="py-[154px] text-center px-6">
-        <FadeIn>
-          <p className="text-[10px] tracking-[0.5em] text-[#BFA37A] uppercase mb-10">
-            Reach
-          </p>
-          <h2
-            className="text-[#F5F1EB] mb-10"
-            style={{
-              fontFamily: "var(--font-cormorant)",
-              fontWeight: 300,
-              fontSize: "clamp(2.2rem, 5vw, 4rem)",
-              letterSpacing: "0.12em",
-            }}
-          >
-            A Global Standard
-          </h2>
-          <p className="text-[#A8A8A8] text-sm md:text-base leading-[2.4] max-w-lg mx-auto font-light">
-            Serving clients across the UK, Europe, UAE, and beyond — with the
-            same standard of precision regardless of destination.
-          </p>
-        </FadeIn>
+                    {/* Title */}
+                    <h3
+                      className="mb-4"
+                      style={{
+                        fontFamily: "var(--font-cormorant)",
+                        fontWeight: 300,
+                        fontSize: "clamp(1.3rem, 2vw, 1.75rem)",
+                        letterSpacing: "0.055em",
+                        color: "#C8C3BA",
+                        lineHeight: 1.25,
+                      }}
+                    >
+                      {step.title}
+                    </h3>
+
+                    {/* Hairline */}
+                    <div className="mb-5 h-px" style={{ width: "2rem", background: "rgba(162, 134, 94, 0.2)" }} />
+
+                    {/* Description */}
+                    <p
+                      className="mb-8"
+                      style={{
+                        fontSize: "0.77rem",
+                        letterSpacing: "0.025em",
+                        color: "#625D58",
+                        fontWeight: 300,
+                        lineHeight: 2.2,
+                        maxWidth: "400px",
+                      }}
+                    >
+                      {step.desc}
+                    </p>
+
+                    {/* Icon */}
+                    <motion.div
+                      style={{ color: "#3A3530" }}
+                      whileHover={{ color: "#625D58" }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {stepIcons[i]}
+                    </motion.div>
+                  </div>
+                </div>
+              </FadeIn>
+            );
+          })}
+          <div className="border-t border-white/[0.05]" />
+        </div>
       </section>
 
       {/* ── 7b. PRIVATE CATALOGUE ────────────────────────── */}
