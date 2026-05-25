@@ -17,6 +17,7 @@ const EASE = [0.25, 0.1, 0.25, 1] as const;
 /* ── Scroll-aware Navbar ─────────────────────────────────── */
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -24,58 +25,230 @@ function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  const navLinks = [
+    { label: "Categories", href: "#collection", num: "01" },
+    { label: "Services",   href: "#process",    num: "02" },
+    { label: "Projects",   href: "#projects",   num: "03" },
+    { label: "Contact",    href: "#contact",    num: "04" },
+  ];
+
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 md:px-14 lg:px-20 py-6 transition-all duration-700"
-      style={{
-        background: scrolled ? "rgba(10, 10, 10, 0.88)" : "transparent",
-        backdropFilter: scrolled ? "blur(16px)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
-        borderBottom: scrolled
-          ? "1px solid rgba(255,255,255,0.04)"
-          : "1px solid transparent",
-      }}
-    >
-      <a href="#" className="shrink-0">
-        <Image
-          src="/logo.png"
-          alt="CFS"
-          width={120}
-          height={48}
-          className="h-10 md:h-12 w-auto object-contain"
-          priority
-        />
-      </a>
-
-      <div className="hidden md:flex items-center gap-10 lg:gap-12">
-        {[
-          { label: "Collections", href: "#collection" },
-          { label: "Services", href: "#process" },
-          { label: "Projects", href: "#" },
-          { label: "Contact", href: "#cta" },
-        ].map(({ label, href }) => (
-          <a
-            key={label}
-            href={href}
-            className="text-[10px] tracking-[0.28em] text-[#A8A8A8] uppercase hover:text-[#F5F1EB] transition-colors duration-300"
-          >
-            {label}
-          </a>
-        ))}
-      </div>
-
-      <motion.a
-        href="https://wa.me/8618688246482"
-        target="_blank"
-        rel="noopener noreferrer"
-        whileHover={{ backgroundColor: "#BFA37A", borderColor: "#BFA37A", color: "#0E0E0E" }}
-        transition={{ duration: 0.3, ease: EASE }}
-        className="hidden md:inline-flex items-center border border-[#BFA37A] px-6 py-2.5 text-[9px] tracking-[0.4em] text-[#BFA37A] uppercase font-light cursor-pointer shrink-0"
-        style={{ transition: "background-color 0.3s, color 0.3s, border-color 0.3s" }}
+    <>
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 md:px-14 lg:px-20 py-6 transition-all duration-700"
+        style={{
+          background: scrolled ? "rgba(10, 10, 10, 0.92)" : "transparent",
+          backdropFilter: scrolled ? "blur(16px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
+          borderBottom: scrolled
+            ? "1px solid rgba(255,255,255,0.04)"
+            : "1px solid transparent",
+        }}
       >
-        Request Catalogue
-      </motion.a>
-    </nav>
+        <a href="#" className="shrink-0 relative z-[60]">
+          <Image
+            src="/logo.png"
+            alt="CFS"
+            width={120}
+            height={48}
+            className="h-10 md:h-12 w-auto object-contain"
+            priority
+          />
+        </a>
+
+        {/* Desktop nav links */}
+        <div className="hidden md:flex items-center gap-10 lg:gap-12">
+          {navLinks.map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              className="text-[10px] tracking-[0.28em] text-[#A8A8A8] uppercase hover:text-[#F5F1EB] transition-colors duration-300"
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+
+        <motion.a
+          href="https://wa.me/8618688246482"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover={{ backgroundColor: "#BFA37A", borderColor: "#BFA37A", color: "#0E0E0E" }}
+          transition={{ duration: 0.3, ease: EASE }}
+          className="hidden md:inline-flex items-center border border-[#BFA37A] px-6 py-2.5 text-[9px] tracking-[0.4em] text-[#BFA37A] uppercase font-light cursor-pointer shrink-0"
+          style={{ transition: "background-color 0.3s, color 0.3s, border-color 0.3s" }}
+        >
+          Request Catalogue
+        </motion.a>
+
+        {/* Mobile hamburger — above overlay (z-[60]) */}
+        <button
+          className="md:hidden relative z-[60] flex flex-col justify-center items-center w-10 h-10 gap-[5px] cursor-pointer"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="Toggle menu"
+        >
+          <motion.span
+            className="block w-5 h-px bg-[#F5F1EB] origin-center"
+            animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 5 : 0 }}
+            transition={{ duration: 0.32, ease: EASE }}
+          />
+          <motion.span
+            className="block w-5 h-px bg-[#F5F1EB]"
+            animate={{ opacity: menuOpen ? 0 : 1, scaleX: menuOpen ? 0 : 1 }}
+            transition={{ duration: 0.22, ease: EASE }}
+          />
+          <motion.span
+            className="block w-5 h-px bg-[#F5F1EB] origin-center"
+            animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? -5 : 0 }}
+            transition={{ duration: 0.32, ease: EASE }}
+          />
+        </button>
+      </nav>
+
+      {/* ── Mobile fullscreen menu ── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.34, ease: EASE }}
+            className="fixed inset-0 z-40 md:hidden flex flex-col"
+            style={{ background: "#0A0A0A" }}
+          >
+            {/* Subtle warm glow at top */}
+            <div
+              className="absolute top-0 inset-x-0 pointer-events-none"
+              style={{
+                height: "40%",
+                background:
+                  "radial-gradient(ellipse 100% 60% at 50% -10%, rgba(191,163,122,0.04) 0%, transparent 70%)",
+              }}
+            />
+
+            <div className="relative z-10 flex flex-col flex-1 px-8 pt-[88px] pb-10 overflow-y-auto">
+
+              {/* Section label */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.35, delay: 0.06, ease: EASE }}
+                className="text-[7px] tracking-[0.55em] text-[#40403C] uppercase mb-5"
+              >
+                Menu
+              </motion.p>
+
+              {/* Nav links — indexed, compact */}
+              <nav className="flex flex-col border-t border-white/[0.05]">
+                {navLinks.map(({ label, href, num }, i) => (
+                  <motion.a
+                    key={label}
+                    href={href}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.36, delay: 0.1 + i * 0.055, ease: EASE }}
+                    onClick={() => setMenuOpen(false)}
+                    className="group flex items-center justify-between py-[14px] border-b border-white/[0.05]"
+                    style={{ textDecoration: "none" }}
+                  >
+                    {/* Index + label */}
+                    <div className="flex items-baseline gap-3.5">
+                      <span
+                        style={{
+                          fontFamily: "var(--font-geist-sans)",
+                          fontSize: "7px",
+                          letterSpacing: "0.35em",
+                          color: "#404040",
+                        }}
+                      >
+                        {num}
+                      </span>
+                      <span
+                        className="text-[#D8D2C8] group-hover:text-[#BFA37A] transition-colors duration-300"
+                        style={{
+                          fontFamily: "var(--font-cormorant)",
+                          fontWeight: 300,
+                          fontSize: "clamp(1.2rem, 4.8vw, 1.5rem)",
+                          letterSpacing: "0.06em",
+                        }}
+                      >
+                        {label}
+                      </span>
+                    </div>
+
+                    {/* Arrow — fades in on hover */}
+                    <svg
+                      width="13"
+                      height="6"
+                      viewBox="0 0 13 6"
+                      fill="none"
+                      className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
+                      <path
+                        d="M0 3H12M12 3L9 1M12 3L9 5"
+                        stroke="#BFA37A"
+                        strokeWidth="0.65"
+                      />
+                    </svg>
+                  </motion.a>
+                ))}
+              </nav>
+
+              {/* CTA — sits directly below nav items */}
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.36, delay: 0.36, ease: EASE }}
+                className="mt-5"
+              >
+                <a
+                  href="https://wa.me/8618688246482"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-center border border-[#BFA37A]/50 py-3.5 text-[8px] tracking-[0.45em] text-[#BFA37A] uppercase font-light hover:border-[#BFA37A] transition-colors duration-300"
+                >
+                  Request Catalogue
+                </a>
+              </motion.div>
+
+              {/* Contact — pinned to bottom, quiet */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.45, delay: 0.48, ease: EASE }}
+                className="mt-auto pt-8 flex flex-col gap-1.5"
+              >
+                <p className="text-[6.5px] tracking-[0.5em] text-[#363632] uppercase mb-1">
+                  Direct Contact
+                </p>
+                <a
+                  href="mailto:chinacfsourcing.info@gmail.com"
+                  className="font-light hover:text-[#BFA37A] transition-colors duration-300"
+                  style={{ fontSize: "10px", color: "#525250", letterSpacing: "0.02em" }}
+                >
+                  chinacfsourcing.info@gmail.com
+                </a>
+                <a
+                  href="tel:+8618688246482"
+                  className="font-light hover:text-[#BFA37A] transition-colors duration-300"
+                  style={{ fontSize: "10px", color: "#525250", letterSpacing: "0.02em" }}
+                >
+                  +86 186 8824 6482
+                </a>
+              </motion.div>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -143,31 +316,31 @@ const processSteps = [
     num: "01",
     title: "Consultation & Briefing",
     desc: "We begin by understanding your project scope, design language, and sourcing expectations to create a tailored procurement roadmap.",
-    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=85",
+    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=90",
   },
   {
     num: "02",
     title: "China Factory Coordination",
-    desc: "Direct coordination with verified manufacturing partners across Foshan and key production hubs in China.",
-    img: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1200&q=85",
+    desc: "Direct coordination with verified manufacturing partners across Foshan and key production hubs — warm introductions, not cold sourcing.",
+    img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=90",
   },
   {
     num: "03",
     title: "Product Development & Selection",
-    desc: "From custom furniture to curated catalog selections, every detail is refined for your project requirements.",
-    img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=85",
+    desc: "From custom furniture to curated catalogue selections — every material, finish, and form refined to your project's exact specification.",
+    img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&q=90",
   },
   {
     num: "04",
     title: "Quality Control & Logistics",
-    desc: "Every order undergoes production monitoring, inspection, secure packaging, and international shipping coordination.",
-    img: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=85",
+    desc: "Every order undergoes rigorous production monitoring, pre-shipment audit, secure packaging, and international freight coordination.",
+    img: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1400&q=90",
   },
   {
     num: "05",
     title: "Installation & After-Sales Support",
-    desc: "End-to-end execution support including delivery coordination, installation guidance, and post-project assistance.",
-    img: "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=85",
+    desc: "End-to-end site coordination, white-glove delivery, and installation guidance — with dedicated after-sales support post-handover.",
+    img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1400&q=90",
   },
 ];
 
@@ -178,380 +351,380 @@ type Category = {
   label: string;
   heading: string;
   description: string;
-  keyPieces: string[];
+  coverImage: string;
   images: CollectionItem[];
 };
 
 const CATEGORIES: Category[] = [
   {
     id: "living",
-    label: "Living Room",
-    heading: "Living Room",
+    label: "Living Systems",
+    heading: "Living Systems",
     description:
-      "Curated lounge systems and statement pieces for the spaces where life unfolds — refined, generous, and quietly enduring.",
-    keyPieces: [
-      "Modular Sectional Sofas",
-      "Lounge Armchairs",
-      "Coffee & Side Tables",
-      "TV Consoles & Media Units",
-      "Decorative Shelving",
-    ],
+      "Precision-crafted sofa systems, modular seating, and lounge configurations sourced directly from China's finest upholstery ateliers — built for luxury residential and hospitality settings.",
+    coverImage: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85",
     images: [
-      { src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=80", alt: "Modern living room sofa" },
-      { src: "https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=900&q=80", alt: "Warm living interior" },
-      { src: "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=900&q=80", alt: "Minimal living space" },
-      { src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=80", alt: "Editorial living room" },
-      { src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&q=80", alt: "Luxury interior" },
+      { src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=85", alt: "Luxury sofa system" },
+      { src: "https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1200&q=85", alt: "Warm living interior" },
+      { src: "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=1200&q=85", alt: "Minimal living space" },
+      { src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=85", alt: "Editorial living room" },
+      { src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=85", alt: "Luxury interior" },
+      { src: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=85", alt: "Lounge system" },
+      { src: "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=85", alt: "Living space" },
+      { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85", alt: "Contemporary living" },
     ],
   },
   {
-    id: "dining",
-    label: "Dining Room",
-    heading: "Dining Room",
+    id: "dining-bedroom",
+    label: "Dining & Bedrooms",
+    heading: "Dining & Bedrooms",
     description:
-      "Dining tables and seating that transform the ritual of gathering — sculptural forms built for presence and permanence.",
-    keyPieces: [
-      "Solid Wood Dining Tables",
-      "Upholstered Dining Chairs",
-      "Sideboards & Buffets",
-      "Bar & Counter Stools",
-      "Display Cabinets",
-    ],
+      "Sculptural dining tables, upholstered seating, platform beds, and bedroom case goods that define the rhythm of daily luxury living.",
+    coverImage: "https://images.unsplash.com/photo-1617104678098-de229db51175?w=900&q=85",
     images: [
-      { src: "https://images.unsplash.com/photo-1617104678098-de229db51175?w=900&q=80", alt: "Luxury dining table" },
-      { src: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=900&q=80", alt: "Modern dining room" },
-      { src: "https://images.unsplash.com/photo-1532372320978-9b5e26945c7e?w=900&q=80", alt: "Dining interior" },
-      { src: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=900&q=80", alt: "Editorial dining space" },
-      { src: "https://images.unsplash.com/photo-1551298370-9d3d53740c72?w=900&q=80", alt: "Dining chairs" },
-    ],
-  },
-  {
-    id: "bedroom",
-    label: "Bedroom",
-    heading: "Bedroom",
-    description:
-      "Beds, wardrobes, and case goods conceived for rest — where material quality and spatial calm become one.",
-    keyPieces: [
-      "Platform & Upholstered Beds",
-      "Freestanding Wardrobes",
-      "Bedside Tables & Nightstands",
-      "Dressing Tables",
-      "Storage Ottomans",
-    ],
-    images: [
-      { src: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=900&q=80", alt: "Minimal bedroom" },
-      { src: "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=900&q=80", alt: "Luxury bed" },
-      { src: "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=900&q=80", alt: "Bedroom interior" },
-      { src: "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=900&q=80", alt: "Calm bedroom" },
-      { src: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=900&q=80", alt: "Bedroom editorial" },
+      { src: "https://images.unsplash.com/photo-1617104678098-de229db51175?w=1200&q=85", alt: "Luxury dining table" },
+      { src: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=1200&q=85", alt: "Modern dining room" },
+      { src: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200&q=85", alt: "Editorial dining space" },
+      { src: "https://images.unsplash.com/photo-1532372320978-9b5e26945c7e?w=1200&q=85", alt: "Dining interior" },
+      { src: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=85", alt: "Minimal bedroom" },
+      { src: "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=1200&q=85", alt: "Luxury bed" },
+      { src: "https://images.unsplash.com/photo-1560185007-c5ca9d2c014d?w=1200&q=85", alt: "Calm bedroom" },
+      { src: "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=1200&q=85", alt: "Bedroom interior" },
     ],
   },
   {
     id: "office",
-    label: "Office & Study",
-    heading: "Office & Study",
+    label: "Office Furniture",
+    heading: "Office Furniture",
     description:
-      "Workspaces designed with intention — desks, storage, and seating that bring discipline and elegance to focused living.",
-    keyPieces: [
-      "Executive & Writing Desks",
-      "Task & Lounge Chairs",
-      "Bookcases & Wall Systems",
-      "Filing & Storage Units",
-      "Meeting Tables",
-    ],
+      "Executive desks, conference systems, and ergonomic task seating engineered for high-performance environments — where design authority meets daily function.",
+    coverImage: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=900&q=85",
     images: [
-      { src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=900&q=80", alt: "Luxury office desk" },
-      { src: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&q=80", alt: "Studio workspace" },
-      { src: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=900&q=80", alt: "Minimal study" },
-      { src: "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?w=900&q=80", alt: "Editorial workspace" },
-      { src: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=900&q=80", alt: "Office interior" },
+      { src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&q=85", alt: "Luxury office desk" },
+      { src: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=85", alt: "Premium workspace" },
+      { src: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1200&q=85", alt: "Minimal study" },
+      { src: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=85", alt: "Studio workspace" },
+      { src: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=1200&q=85", alt: "Executive office" },
+      { src: "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?w=1200&q=85", alt: "Editorial workspace" },
+      { src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&q=85", alt: "Modern office" },
+      { src: "https://images.unsplash.com/photo-1560185008-b033106af5c3?w=1200&q=85", alt: "Office interior" },
     ],
   },
   {
     id: "hospitality",
-    label: "Hospitality",
-    heading: "Hospitality",
+    label: "Hospitality Furniture",
+    heading: "Hospitality Furniture",
     description:
-      "Contract-grade furniture engineered for luxury hotels, resorts, and private members clubs — durable, beautiful, bespoke.",
-    keyPieces: [
-      "Hotel Room Casegoods",
-      "Lobby & Lounge Seating",
-      "Restaurant & Bar Furniture",
-      "Outdoor Terrace Sets",
-      "Custom Headboards",
-    ],
+      "Contract-grade furniture for five-star hotels, luxury resorts, and private clubs — durable, bespoke, and finished to the standard the world's best properties expect.",
+    coverImage: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&q=85",
     images: [
-      { src: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&q=80", alt: "Luxury hotel room" },
-      { src: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=900&q=80", alt: "Resort interior" },
-      { src: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=900&q=80", alt: "Hotel lobby" },
-      { src: "https://images.unsplash.com/photo-1549294413-26f195200c16?w=900&q=80", alt: "Hospitality design" },
-      { src: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900&q=80", alt: "Hotel suite" },
-    ],
-  },
-  {
-    id: "custom",
-    label: "Custom Pieces",
-    heading: "Custom Pieces",
-    description:
-      "From concept sketch to white-glove delivery — our bespoke manufacture service brings your most ambitious brief to life.",
-    keyPieces: [
-      "Bespoke Sofas & Sectionals",
-      "Custom Dining Tables",
-      "Made-to-Measure Storage",
-      "Architectural Joinery",
-      "Prototype & Single-Run Pieces",
-    ],
-    images: [
-      { src: "https://images.unsplash.com/photo-1449844908441-8829872d2607?w=900&q=80", alt: "Custom furniture" },
-      { src: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=900&q=80", alt: "Bespoke interior" },
-      { src: "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=900&q=80", alt: "Custom piece detail" },
-      { src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80", alt: "Artisan furniture" },
-      { src: "https://images.unsplash.com/photo-1600494448853-e4a3b75f0c74?w=900&q=80", alt: "Bespoke room" },
+      { src: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=85", alt: "Luxury hotel room" },
+      { src: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=1200&q=85", alt: "Resort interior" },
+      { src: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=85", alt: "Hotel lobby" },
+      { src: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=85", alt: "Hotel suite" },
+      { src: "https://images.unsplash.com/photo-1549294413-26f195200c16?w=1200&q=85", alt: "Hospitality design" },
+      { src: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=1200&q=85", alt: "Luxury lounge" },
+      { src: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1200&q=85", alt: "Hotel entrance" },
+      { src: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&q=85", alt: "Resort suite" },
     ],
   },
   {
     id: "outdoor",
-    label: "Outdoor & Terrace",
-    heading: "Outdoor & Terrace",
+    label: "Outdoor Furniture",
+    heading: "Outdoor Furniture",
     description:
-      "Weather-resistant furniture for terraces, gardens, and pool decks — designed with the same standard as every indoor space.",
-    keyPieces: [
-      "Outdoor Sofa Systems",
-      "Dining Sets & Terrace Tables",
-      "Sun Loungers & Daybeds",
-      "Planters & Screens",
-      "Outdoor Lighting",
-    ],
+      "Weather-resistant teak, powder-coated aluminium, and rope weave systems for terraces, pool decks, and garden pavilions — built to the same standard as every indoor collection.",
+    coverImage: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=85",
     images: [
-      { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80", alt: "Terrace furniture" },
-      { src: "https://images.unsplash.com/photo-1523192193543-6e7296d960e4?w=900&q=80", alt: "Outdoor living" },
-      { src: "https://images.unsplash.com/photo-1481604445574-bba08b6d46b5?w=900&q=80", alt: "Pool terrace" },
-      { src: "https://images.unsplash.com/photo-1561090268-f6b1de8a1f98?w=900&q=80", alt: "Garden space" },
-      { src: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=900&q=80", alt: "Outdoor seating" },
+      { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=85", alt: "Terrace furniture" },
+      { src: "https://images.unsplash.com/photo-1523192193543-6e7296d960e4?w=1200&q=85", alt: "Outdoor living" },
+      { src: "https://images.unsplash.com/photo-1481604445574-bba08b6d46b5?w=1200&q=85", alt: "Pool terrace" },
+      { src: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=1200&q=85", alt: "Outdoor seating" },
+      { src: "https://images.unsplash.com/photo-1561090268-f6b1de8a1f98?w=1200&q=85", alt: "Garden space" },
+      { src: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=85", alt: "Garden dining" },
+      { src: "https://images.unsplash.com/photo-1558618047-f4dd8a4f5f16?w=1200&q=85", alt: "Patio lounge" },
+      { src: "https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=1200&q=85", alt: "Outdoor luxury" },
     ],
   },
   {
     id: "lighting",
-    label: "Lighting & Decor",
-    heading: "Lighting & Decor",
+    label: "Lighting Solutions",
+    heading: "Lighting Solutions",
     description:
-      "Pendants, floor lamps, and decorative objects that complete a space — each one selected for its quiet authority.",
-    keyPieces: [
-      "Statement Pendants",
-      "Floor & Arc Lamps",
-      "Table Lamps",
-      "Mirrors & Wall Art",
-      "Decorative Objects",
-    ],
+      "Statement pendants, architectural floor lamps, and custom lighting systems that define the atmosphere of a space — sourced from China's most specialised lighting manufacturers.",
+    coverImage: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=900&q=85",
     images: [
-      { src: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=900&q=80", alt: "Pendant lighting" },
-      { src: "https://images.unsplash.com/photo-1513506003901-1e6a35066c31?w=900&q=80", alt: "Interior lighting" },
-      { src: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=900&q=80", alt: "Decorative light" },
-      { src: "https://images.unsplash.com/photo-1601628828688-632f38a5a7d0?w=900&q=80", alt: "Lamp detail" },
-      { src: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=900&q=80", alt: "Decorative objects" },
+      { src: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=1200&q=85", alt: "Pendant lighting" },
+      { src: "https://images.unsplash.com/photo-1513506003901-1e6a35066c31?w=1200&q=85", alt: "Interior lighting" },
+      { src: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=1200&q=85", alt: "Decorative light" },
+      { src: "https://images.unsplash.com/photo-1601628828688-632f38a5a7d0?w=1200&q=85", alt: "Lamp detail" },
+      { src: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=1200&q=85", alt: "Lighting fixtures" },
+      { src: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&q=85", alt: "Statement pendant" },
+      { src: "https://images.unsplash.com/photo-1517991104123-1d56a6e81ed9?w=1200&q=85", alt: "Table lamp" },
+      { src: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=1200&q=85", alt: "Architectural light" },
+    ],
+  },
+  {
+    id: "kitchen",
+    label: "Kitchen & Wardrobes",
+    heading: "Kitchen & Wardrobes",
+    description:
+      "Precision-crafted modular kitchen systems and bespoke fitted wardrobes tailored for contemporary luxury interiors — manufactured to millimetre accuracy.",
+    coverImage: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=85",
+    images: [
+      { src: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=85", alt: "Luxury kitchen" },
+      { src: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1200&q=85", alt: "Modern kitchen interior" },
+      { src: "https://images.unsplash.com/photo-1565183997392-2f6f122e5912?w=1200&q=85", alt: "Kitchen design" },
+      { src: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&q=85", alt: "Kitchen space" },
+      { src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=85", alt: "Minimal kitchen" },
+      { src: "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1200&q=85", alt: "Wardrobe interior" },
+      { src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85", alt: "Fitted wardrobe" },
+      { src: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&q=85", alt: "Kitchen cabinetry" },
+    ],
+  },
+  {
+    id: "decor",
+    label: "Home Decor",
+    heading: "Home Decor",
+    description:
+      "Curated decorative objects, vases, sculptures, mirrors, and accent pieces that complete the narrative of a considered luxury interior.",
+    coverImage: "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=900&q=85",
+    images: [
+      { src: "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=1200&q=85", alt: "Styled shelves" },
+      { src: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&q=85", alt: "Decor interior" },
+      { src: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=85", alt: "Decor objects" },
+      { src: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=1200&q=85", alt: "Interior styling" },
+      { src: "https://images.unsplash.com/photo-1567225591450-06036b3392a6?w=1200&q=85", alt: "Decor collection" },
+      { src: "https://images.unsplash.com/photo-1549187774-b4e9b0445b41?w=1200&q=85", alt: "Accent pieces" },
+      { src: "https://images.unsplash.com/photo-1594046243098-0fceea9d451e?w=1200&q=85", alt: "Decorative detail" },
+      { src: "https://images.unsplash.com/photo-1473188588951-666fce8e7c68?w=1200&q=85", alt: "Styled interior" },
+    ],
+  },
+  {
+    id: "rugs",
+    label: "Rugs & Upholstery",
+    heading: "Rugs & Upholstery",
+    description:
+      "Hand-knotted rugs, performance fabrics, and bespoke upholstery materials that bring warmth, texture, and depth to luxury residential and hospitality interiors.",
+    coverImage: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=900&q=85",
+    images: [
+      { src: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=1200&q=85", alt: "Luxury rug" },
+      { src: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&q=85", alt: "Textile detail" },
+      { src: "https://images.unsplash.com/photo-1612533319060-f2bbaef1c4d6?w=1200&q=85", alt: "Rug detail" },
+      { src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=85", alt: "Upholstery textures" },
+      { src: "https://images.unsplash.com/photo-1561212044-bac5ef688a07?w=1200&q=85", alt: "Fabric close-up" },
+      { src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=85", alt: "Upholstered seating" },
+      { src: "https://images.unsplash.com/photo-1549187774-b4e9b0445b41?w=1200&q=85", alt: "Rug collection" },
+      { src: "https://images.unsplash.com/photo-1567225591450-06036b3392a6?w=1200&q=85", alt: "Textile interior" },
     ],
   },
 ];
 
-/* ── Grid area map for 5 images ─────────────────────────── */
-const GRID_AREAS = ["a", "b", "c", "d", "e"] as const;
-
 /* ── OurCollection ───────────────────────────────────────── */
 function OurCollection() {
-  const [activeId, setActiveId] = useState("living");
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
-  const sectionRef = useRef<HTMLElement>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const gridParallaxY = useTransform(scrollYProgress, [0, 1], [24, -24]);
+  const selected = selectedId
+    ? (CATEGORIES.find((c) => c.id === selectedId) ?? null)
+    : null;
 
-  const active = CATEGORIES.find((c) => c.id === activeId)!;
+  useEffect(() => {
+    if (selectedId) {
+      setTimeout(() => {
+        document
+          .getElementById("collection-detail")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 240);
+    }
+  }, [selectedId]);
+
+  const handleSelect = (id: string) =>
+    setSelectedId((prev) => (prev === id ? null : id));
 
   return (
     <section
-      ref={sectionRef}
       id="collection"
-      className="relative bg-[#0E0E0E] pt-[102px] pb-[140px] px-6 md:px-16 lg:px-24"
+      className="relative bg-[#0E0E0E] pt-14 md:pt-[64px] pb-[100px] px-5 md:px-14 lg:px-20"
     >
       {/* Section header */}
-      <FadeIn className="mb-16 text-center">
-        <p className="text-[9px] tracking-[0.55em] text-[#BFA37A] uppercase mb-5">
-          Our Collection
+      <FadeIn className="mb-8 md:mb-10 text-center">
+        <p className="text-[8px] tracking-[0.55em] text-[#BFA37A] uppercase mb-3 md:mb-4">
+          01 — Categories
         </p>
         <h2
           style={{
-            fontFamily: "var(--font-cormorant)",
-            fontWeight: 300,
-            fontSize: "clamp(2rem, 4vw, 2.8rem)",
-            letterSpacing: "0.12em",
+            fontFamily: "var(--font-playfair)",
+            fontWeight: 400,
+            fontStyle: "italic",
+            fontSize: "clamp(1.45rem, 2.6vw, 2.2rem)",
+            letterSpacing: "0.04em",
             color: "#F5F1EB",
+            lineHeight: 1.15,
           }}
         >
-          A World of Craftsmanship
+          Categories We Cater
         </h2>
       </FadeIn>
 
-      {/* Category tabs */}
-      <FadeIn delay={0.1} className="mb-20">
-        <div className="flex flex-wrap gap-x-7 gap-y-4 justify-center max-w-[900px] mx-auto">
-          {CATEGORIES.map((cat) => {
-            const isActive = activeId === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveId(cat.id)}
-                className="relative text-[9px] tracking-[0.35em] uppercase transition-colors duration-300 cursor-pointer pb-1"
-                style={{ color: isActive ? "#BFA37A" : "#A8A8A8" }}
+      {/* 9-card category grid — 3 cols desktop, 2 cols mobile */}
+      <div className="max-w-[1400px] mx-auto grid grid-cols-2 md:grid-cols-3 gap-[7px]">
+        {CATEGORIES.map((cat, i) => {
+          const isSelected = selectedId === cat.id;
+          return (
+            <FadeIn key={cat.id} delay={i * 0.05}>
+              <motion.div
+                className="relative overflow-hidden cursor-pointer group"
+                style={{ aspectRatio: "3/4" }}
+                onClick={() => handleSelect(cat.id)}
+                whileTap={{ scale: 0.997 }}
               >
-                {cat.label}
-                {isActive && (
-                  <motion.span
-                    layoutId="category-underline"
-                    className="absolute bottom-0 left-0 right-0 h-px bg-[#BFA37A]"
-                    transition={{ duration: 0.35, ease: EASE }}
-                  />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </FadeIn>
+                {/* Image */}
+                <motion.img
+                  src={cat.coverImage}
+                  alt={cat.label}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  whileHover={{ scale: 1.06 }}
+                  transition={{ duration: 0.95, ease: EASE }}
+                />
 
-      {/* Content: sticky left + image grid right */}
-      <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
+                {/* Permanent gradient — bottom up */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/18 to-black/8" />
 
-        {/* LEFT — sticky info panel */}
-        <div className="lg:w-[28%] lg:sticky lg:top-28 shrink-0">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeId + "_text"}
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.42, ease: EASE }}
-            >
-              <p className="text-[8px] tracking-[0.55em] text-[#BFA37A] uppercase mb-6">
-                CFS Collection
-              </p>
-              <h3
-                className="text-[#F5F1EB] mb-7 leading-[1.2]"
-                style={{
-                  fontFamily: "var(--font-playfair)",
-                  fontWeight: 400,
-                  fontSize: "clamp(1.9rem, 3vw, 2.7rem)",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                {active.heading}
-              </h3>
-              <p className="text-[#A8A8A8] text-[13px] leading-[2.15] font-light mb-10">
-                {active.description}
-              </p>
+                {/* Hover darkening */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-600" />
 
-              <p className="text-[8px] tracking-[0.5em] text-[#F5F1EB]/70 uppercase mb-5">
-                Key Pieces
-              </p>
-              <ul className="flex flex-col gap-3.5">
-                {active.keyPieces.map((piece, i) => (
-                  <motion.li
-                    key={piece}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: i * 0.06, ease: EASE }}
-                    className="flex items-center gap-3.5 text-[11px] tracking-[0.15em] text-[#A8A8A8] font-light"
-                  >
-                    <span className="w-5 h-px bg-[#BFA37A] opacity-50 shrink-0" />
-                    {piece}
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* RIGHT — asymmetric image grid */}
-        <div className="lg:w-[72%] min-w-0">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeId + "_grid"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              style={{ y: gridParallaxY }}
-            >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr 1fr",
-                  gridTemplateRows: "320px 210px 250px",
-                  gridTemplateAreas: `"a a b" "c d d" "c e e"`,
-                  gap: "6px",
-                }}
-              >
-                {active.images.map((img, i) => (
-                  <motion.div
-                    key={img.src}
-                    initial={{ opacity: 0, y: 22 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.65, delay: i * 0.09, ease: EASE }}
-                    className="relative overflow-hidden group cursor-pointer"
-                    style={{ gridArea: GRID_AREAS[i] }}
-                    onClick={() =>
-                      setLightboxSrc(img.src.replace("w=900", "w=1600"))
-                    }
-                  >
-                    <motion.img
-                      src={img.src}
-                      alt={img.alt}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.04 }}
-                      transition={{ duration: 0.75, ease: EASE }}
+                {/* Selected gold border */}
+                <AnimatePresence>
+                  {isSelected && (
+                    <motion.div
+                      key="border"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute inset-0 border border-[#BFA37A]/55 pointer-events-none"
                     />
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/28 transition-colors duration-500 flex items-center justify-center">
-                      <span className="text-[8px] tracking-[0.55em] text-white uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
-                        View
+                  )}
+                </AnimatePresence>
+
+                {/* Card text — bottom */}
+                <div className="absolute bottom-0 left-0 right-0 px-4 md:px-5 pb-4 md:pb-5">
+                  <p className="text-[6.5px] tracking-[0.48em] text-[#BFA37A] uppercase mb-1.5 font-light">
+                    {String(i + 1).padStart(2, "0")}
+                  </p>
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-cormorant)",
+                      fontWeight: 300,
+                      fontSize: "clamp(0.88rem, 1.5vw, 1.25rem)",
+                      letterSpacing: "0.04em",
+                      color: "#F5F1EB",
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {cat.label}
+                  </h3>
+                  {/* Hover CTA — max-h reveal: never overlaps name above */}
+                  <div className="mt-1.5 max-h-0 group-hover:max-h-7 overflow-hidden transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100">
+                    <div className="pt-1.5 flex items-center gap-2">
+                      <div className="w-3.5 h-px bg-[#BFA37A] shrink-0" />
+                      <span className="text-[6.5px] tracking-[0.42em] text-[#BFA37A] uppercase whitespace-nowrap">
+                        {isSelected ? "Close" : "Explore"}
                       </span>
                     </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+                  </div>
+                </div>
+              </motion.div>
+            </FadeIn>
+          );
+        })}
       </div>
 
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxSrc && (
+      {/* ── Detail panel — expands below the grid on click ── */}
+      <AnimatePresence mode="wait">
+        {selected && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.28 }}
-            className="fixed inset-0 z-[100] bg-black/92 flex items-center justify-center p-6 cursor-pointer"
-            onClick={() => setLightboxSrc(null)}
+            id="collection-detail"
+            key={selected.id + "_detail"}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.58, ease: EASE }}
+            className="max-w-[1400px] mx-auto mt-14 scroll-mt-28"
           >
-            <motion.img
-              initial={{ scale: 0.94, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.96, opacity: 0 }}
-              transition={{ duration: 0.38, ease: EASE }}
-              src={lightboxSrc}
-              alt="Collection detail"
-              className="max-w-full max-h-[88vh] object-contain shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            />
-            <button
-              onClick={() => setLightboxSrc(null)}
-              className="absolute top-8 right-10 text-[9px] tracking-[0.4em] text-[#A8A8A8] uppercase hover:text-[#F5F1EB] transition-colors duration-200 cursor-pointer"
-            >
-              Close
-            </button>
+            {/* Thin gold separator */}
+            <div className="w-full h-px bg-[#BFA37A] opacity-18 mb-10" />
+
+            {/* Header row */}
+            <div className="flex items-start justify-between gap-8 mb-10">
+              <div className="min-w-0">
+                <p className="text-[8px] tracking-[0.55em] text-[#BFA37A] uppercase mb-4">
+                  CFS — {selected.label}
+                </p>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-cormorant)",
+                    fontWeight: 300,
+                    fontSize: "clamp(1.8rem, 3.5vw, 3rem)",
+                    letterSpacing: "0.02em",
+                    color: "#F5F1EB",
+                    lineHeight: 1.1,
+                  }}
+                >
+                  {selected.heading}
+                </h3>
+                <p className="mt-5 text-[13px] text-[#A8A8A8] font-light leading-[2] max-w-[580px]">
+                  {selected.description}
+                </p>
+              </div>
+
+              {/* Close */}
+              <button
+                onClick={() => setSelectedId(null)}
+                className="shrink-0 flex items-center gap-3 group/close cursor-pointer mt-1"
+              >
+                <span className="text-[8px] tracking-[0.4em] text-[#5A5350] group-hover/close:text-[#BFA37A] uppercase transition-colors duration-300">
+                  Close
+                </span>
+                <div className="w-8 h-8 border border-white/10 group-hover/close:border-[#BFA37A]/40 flex items-center justify-center transition-colors duration-300">
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    stroke="#5A5350"
+                    strokeWidth="0.9"
+                    className="group-hover/close:stroke-[#BFA37A] transition-[stroke] duration-300"
+                  >
+                    <line x1="1" y1="1" x2="9" y2="9" />
+                    <line x1="9" y1="1" x2="1" y2="9" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+
+            {/* Image grid — 4 cols desktop, 2 cols mobile, all 4:3 */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[7px]">
+              {selected.images.map((img, i) => (
+                <motion.div
+                  key={img.src + i}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.055, ease: EASE }}
+                  className="relative overflow-hidden group/img"
+                  style={{ aspectRatio: "4/3" }}
+                >
+                  <motion.img
+                    src={img.src}
+                    alt={img.alt}
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.85, ease: EASE }}
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-500" />
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -636,11 +809,11 @@ function OurExpertise() {
   return (
     <section
       id="expertise"
-      className="bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-[115px] pb-[140px]"
+      className="bg-[#0E0E0E] px-5 md:px-16 lg:px-24 pt-12 md:pt-[72px] pb-14 md:pb-[90px]"
     >
       {/* Header */}
-      <FadeIn className="max-w-[1400px] mx-auto mb-24">
-        <p className="text-[9px] tracking-[0.5em] text-[#BFA37A] uppercase mb-7">
+      <FadeIn className="max-w-[1400px] mx-auto mb-6 md:mb-10">
+        <p className="text-[9px] tracking-[0.5em] text-[#BFA37A] uppercase mb-4">
           02 — Services
         </p>
         <h2
@@ -655,7 +828,7 @@ function OurExpertise() {
         >
           Our Expertise
         </h2>
-        <div className="mt-10 h-px bg-white/[0.08]" />
+        <div className="mt-6 h-px bg-white/[0.08]" />
       </FadeIn>
 
       {/* Accordion */}
@@ -665,18 +838,17 @@ function OurExpertise() {
 
           return (
             <div key={svc.id}>
-              {/* Clickable row */}
+              {/* Clickable row — hover for h3 animation; only + icon expands */}
               <motion.div
-                className="py-10 md:py-11 cursor-pointer group"
-                onClick={() => toggle(svc.id)}
+                className="py-4 md:py-5 group"
                 whileHover="hovered"
               >
                 {/* Main row: number + heading | tagline + button */}
-                <div className="flex items-center justify-between gap-6 md:gap-12">
+                <div className="flex items-center justify-between gap-4 md:gap-8">
                   {/* Left */}
-                  <div className="flex items-baseline gap-7 md:gap-10 min-w-0">
+                  <div className="flex items-baseline gap-4 md:gap-7 min-w-0">
                     <span
-                      className="shrink-0 text-[9px] tracking-[0.45em] text-[#BFA37A]"
+                      className="shrink-0 text-[8px] md:text-[9px] tracking-[0.35em] md:tracking-[0.45em] text-[#BFA37A]"
                       style={{ fontFamily: "var(--font-geist-sans)" }}
                     >
                       {svc.num}
@@ -689,7 +861,7 @@ function OurExpertise() {
                       style={{
                         fontFamily: "var(--font-cormorant)",
                         fontWeight: 300,
-                        fontSize: "clamp(1.6rem, 3.2vw, 2.8rem)",
+                        fontSize: "clamp(1.1rem, 3.2vw, 2.6rem)",
                         letterSpacing: "0.04em",
                         color: isOpen ? "#F5F1EB" : "#9A9690",
                         lineHeight: 1.15,
@@ -701,39 +873,41 @@ function OurExpertise() {
                   </div>
 
                   {/* Right */}
-                  <div className="flex items-center gap-6 md:gap-10 shrink-0">
-                    <p className="hidden lg:block text-[11px] tracking-[0.08em] text-[#A8A8A8]/60 font-light max-w-[280px] text-right leading-[1.7]">
+                  <div className="flex items-center gap-3 md:gap-6 shrink-0">
+                    {/* Tagline — single line on xl, hidden below */}
+                    <p className="hidden xl:block text-[10px] tracking-[0.05em] text-[#A8A8A8]/50 font-light whitespace-nowrap text-right">
                       {svc.tagline}
                     </p>
 
-                    {/* Circle + button */}
+                    {/* Circle + button — ONLY this triggers open/close */}
                     <motion.div
-                      className="w-11 h-11 rounded-full border border-[#A8A8A8]/20 flex items-center justify-center shrink-0"
+                      className="w-8 h-8 md:w-9 md:h-9 rounded-full border border-[#A8A8A8]/15 flex items-center justify-center shrink-0 cursor-pointer"
                       animate={{ rotate: isOpen ? 45 : 0 }}
                       transition={{ duration: 0.55, ease: EASE }}
                       style={{ color: isOpen ? "#BFA37A" : "#A8A8A8" }}
+                      onClick={() => toggle(svc.id)}
                     >
                       <svg
-                        width="13"
-                        height="13"
-                        viewBox="0 0 13 13"
+                        width="11"
+                        height="11"
+                        viewBox="0 0 11 11"
                         fill="none"
                       >
                         <line
-                          x1="6.5"
+                          x1="5.5"
                           y1="0"
-                          x2="6.5"
-                          y2="13"
+                          x2="5.5"
+                          y2="11"
                           stroke="currentColor"
-                          strokeWidth="0.9"
+                          strokeWidth="0.85"
                         />
                         <line
                           x1="0"
-                          y1="6.5"
-                          x2="13"
-                          y2="6.5"
+                          y1="5.5"
+                          x2="11"
+                          y2="5.5"
                           stroke="currentColor"
-                          strokeWidth="0.9"
+                          strokeWidth="0.85"
                         />
                       </svg>
                     </motion.div>
@@ -742,7 +916,7 @@ function OurExpertise() {
 
                 {/* Expanding gold line */}
                 <motion.div
-                  className="mt-7 h-px bg-[#BFA37A]"
+                  className="mt-3 md:mt-4 h-px bg-[#BFA37A]"
                   animate={{ scaleX: isOpen ? 1 : 0, opacity: isOpen ? 0.5 : 0 }}
                   transition={{ duration: 0.75, ease: EASE }}
                   style={{ transformOrigin: "left" }}
@@ -763,19 +937,19 @@ function OurExpertise() {
                     }}
                     className="overflow-hidden"
                   >
-                    <div className="pb-16 pt-2 grid md:grid-cols-2 gap-12 md:gap-24">
+                    <div className="pb-7 md:pb-10 pt-1 grid md:grid-cols-2 gap-5 md:gap-14">
                       {/* Description */}
                       <motion.p
                         initial={{ opacity: 0, y: 14 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.65, delay: 0.22, ease: EASE }}
-                        className="text-[#A8A8A8] text-[13px] md:text-sm leading-[2.3] font-light"
+                        className="text-[#A8A8A8] text-[12px] md:text-[13px] leading-[1.9] md:leading-[2] font-light"
                       >
                         {svc.description}
                       </motion.p>
 
                       {/* Sub-services */}
-                      <ul className="flex flex-col gap-5 pt-1">
+                      <ul className="flex flex-col gap-2.5 md:gap-3.5 pt-1">
                         {svc.subServices.map((sub, j) => (
                           <motion.li
                             key={sub}
@@ -786,9 +960,9 @@ function OurExpertise() {
                               delay: 0.28 + j * 0.07,
                               ease: EASE,
                             }}
-                            className="flex items-center gap-4 text-[11px] tracking-[0.18em] text-[#A8A8A8] font-light uppercase"
+                            className="flex items-center gap-3 md:gap-4 text-[10px] md:text-[11px] tracking-[0.16em] md:tracking-[0.18em] text-[#A8A8A8] font-light uppercase"
                           >
-                            <span className="w-5 h-px bg-[#BFA37A] opacity-45 shrink-0" />
+                            <span className="w-4 md:w-5 h-px bg-[#BFA37A] opacity-45 shrink-0" />
                             {sub}
                           </motion.li>
                         ))}
@@ -822,70 +996,48 @@ type Project = {
 
 const PROJECTS: Project[] = [
   {
-    id: "peninsula",
-    name: "The Peninsula Hotel",
-    location: "HONG KONG",
-    type: "5-Star Hotel",
-    year: "2023",
-    itemsSourced: 310,
-    description:
-      "A full FF&E package for one of Hong Kong's most iconic luxury hotels — spanning 280 guest rooms, suites, and lobby spaces. Every piece was custom-sourced to meet the Peninsula's exacting heritage aesthetic, blending classic forms with precision manufacturing.",
-    src: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1600&q=85",
-  },
-  {
-    id: "villa",
-    name: "Private Villa",
+    id: "dubai",
+    name: "Al Barari Estate",
     location: "DUBAI, UAE",
-    type: "Private Residence",
+    type: "Private Villa",
     year: "2024",
-    itemsSourced: 127,
+    itemsSourced: 312,
     description:
-      "An ultra-private residential commission in Palm Jumeirah — a curated selection of bespoke furniture across 6 living spaces, 5 bedrooms, and a rooftop entertainment terrace. Designed alongside the client's interior architect for a seamless material language.",
-    src: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=85",
+      "A landmark private estate in Dubai's most prestigious enclave — Al Barari. Six living volumes, master suite wings, and a private entertainment pavilion, all furnished end-to-end by CFS. Every piece specified to a singular material language: warm marble, natural stone, brushed brass, and custom contemporary upholstery — manufactured through our integrated Foshan production network and white-glove delivered to site.",
+    src: "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1600&q=85",
   },
   {
-    id: "apartments",
-    name: "Luxury Apartments",
-    location: "LONDON, UK",
-    type: "Residential Development",
+    id: "china",
+    name: "Bund Residences",
+    location: "SHANGHAI, CHINA",
+    type: "Luxury Apartments",
     year: "2023",
-    itemsSourced: 480,
+    itemsSourced: 528,
     description:
-      "A landmark residential development in Central London — 24 apartments fully furnished across living, dining, and bedroom categories. A tight delivery schedule met without compromise on specification.",
-    src: "https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1600&q=85",
+      "A premium residential development along Shanghai's historic Bund waterfront — 38 fully furnished apartments across living, dining, and bedroom categories. Dark walnut casework, architectural joinery, and bespoke upholstery produced through CFS's Foshan facilities. A consistent material story from lobby to penthouse, delivered on a compressed construction timeline.",
+    src: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1600&q=85",
   },
   {
-    id: "resort",
-    name: "Boutique Resort",
-    location: "BALI, INDONESIA",
-    type: "Boutique Hotel",
+    id: "india",
+    name: "Lodha Altamount",
+    location: "MUMBAI, INDIA",
+    type: "Luxury Residence",
     year: "2024",
-    itemsSourced: 210,
+    itemsSourced: 174,
     description:
-      "A 32-villa boutique resort in Seminyak — all FF&E sourced to reflect the natural materiality of the site. Teak, rattan, and woven textiles combined with custom upholstery and bespoke case goods.",
-    src: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1600&q=85",
+      "A full-floor private residence on Altamount Road — Mumbai's most coveted address. Warm ivory veneers, hand-selected natural textiles, and custom solid wood furniture sourced to the client's architect's exacting specification. A seamless material conversation across living spaces, private dining, and bedroom suites — all coordinated, manufactured, and installed by CFS.",
+    src: "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1600&q=85",
   },
   {
-    id: "offices",
-    name: "Executive Offices",
-    location: "SINGAPORE",
-    type: "Commercial Interior",
-    year: "2022",
-    itemsSourced: 185,
-    description:
-      "A complete office transformation for a global financial institution — executive floors, boardrooms, and client-facing spaces. A restrained material palette of walnut, brass, and deep leather rendered in bespoke joinery and seating.",
-    src: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1600&q=85",
-  },
-  {
-    id: "residence",
-    name: "Private Residence",
-    location: "PARIS, FRANCE",
-    type: "Private Residence",
+    id: "usa",
+    name: "Tribeca Penthouse",
+    location: "NEW YORK, USA",
+    type: "Luxury Penthouse",
     year: "2024",
-    itemsSourced: 94,
+    itemsSourced: 148,
     description:
-      "A Haussmannian apartment in the 7th arrondissement — restored and refurnished with a curated collection of bespoke seating, dining furniture, and decorative pieces. An exercise in restraint and quiet luxury.",
-    src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&q=85",
+      "A full-floor penthouse in Lower Manhattan — furnished with a curated selection of custom seating, bespoke case goods, and sculptural lighting sourced through CFS. A restrained editorial palette of pale oak, linen, and brushed nickel, precision-manufactured to the designer's drawings and white-glove delivered to the 42nd floor.",
+    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=85",
   },
 ];
 
@@ -912,15 +1064,15 @@ function FeaturedWork() {
     };
   }, [activeProject]);
 
-  const gridAreas = ["a", "b", "c", "d", "e", "f"] as const;
+  const gridAreas = ["a", "b", "c", "d"] as const;
 
   return (
     <section
       id="projects"
-      className="relative bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-[102px] pb-[140px]"
+      className="relative bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-[72px] pb-[100px]"
     >
       {/* Header */}
-      <FadeIn className="mb-20 max-w-[1400px] mx-auto">
+      <FadeIn className="mb-14 max-w-[1400px] mx-auto">
         <p className="text-[9px] tracking-[0.55em] text-[#BFA37A] uppercase mb-5">
           03 — Projects
         </p>
@@ -938,14 +1090,14 @@ function FeaturedWork() {
         </h2>
       </FadeIn>
 
-      {/* Project grid */}
+      {/* Project grid — 4 editorial panels */}
       <div className="max-w-[1400px] mx-auto">
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(6, 1fr)",
-            gridTemplateRows: "60vh 44vh 50vh",
-            gridTemplateAreas: `"a a a b b b" "c c d d e e" "f f f f f f"`,
+            gridTemplateColumns: "repeat(5, 1fr)",
+            gridTemplateRows: "60vh 52vh",
+            gridTemplateAreas: `"a a a b b" "c c d d d"`,
             gap: "6px",
           }}
         >
@@ -1220,76 +1372,101 @@ function PeopleSection() {
   return (
     <section
       id="people"
-      className="relative bg-[#0E0E0E] px-6 md:px-16 lg:px-24 pt-[115px] pb-[154px]"
+      className="relative bg-[#0E0E0E] px-5 md:px-14 lg:px-20 pt-14 md:pt-[64px] pb-14 md:pb-[76px]"
     >
-      {/* Header */}
-      <FadeIn className="max-w-[1400px] mx-auto mb-28">
-        <p className="text-[9px] tracking-[0.55em] text-[#BFA37A] uppercase mb-7">
-          04 — People
-        </p>
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:gap-32">
-          <h2
+      {/* ── Editorial split header ── */}
+      <FadeIn className="max-w-[1400px] mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-20 pb-7 md:pb-9 border-b border-white/[0.07]">
+          <div>
+            <p className="text-[8px] tracking-[0.55em] text-[#BFA37A] uppercase mb-4">
+              04 — Leadership
+            </p>
+            <h2
+              style={{
+                fontFamily: "var(--font-cormorant)",
+                fontWeight: 300,
+                fontSize: "clamp(1.9rem, 3.6vw, 3rem)",
+                letterSpacing: "0.05em",
+                color: "#F5F1EB",
+                lineHeight: 1.12,
+              }}
+            >
+              The Experts
+              <br />
+              <em style={{ fontStyle: "italic", color: "#9A9690" }}>
+                Behind Every Project
+              </em>
+            </h2>
+          </div>
+          <p
+            className="font-light leading-[1.8] max-w-[280px] md:pb-0.5"
             style={{
-              fontFamily: "var(--font-cormorant)",
-              fontWeight: 300,
-              fontSize: "clamp(2.4rem, 5vw, 4rem)",
-              letterSpacing: "0.06em",
-              color: "#F5F1EB",
-              lineHeight: 1.1,
+              fontSize: "clamp(10px, 1.1vw, 12px)",
+              color: "#6A6A6A",
+              letterSpacing: "0.02em",
             }}
           >
-            People Behind
-            <br />
-            <em>the Process</em>
-          </h2>
-          <p className="text-[#A8A8A8] text-[13px] leading-[2.3] font-light max-w-[360px] lg:pb-1.5">
-            Behind every project is a team of specialists ensuring precision,
-            material integrity, and execution at global standards.
+            A focused team of sourcing specialists, quality experts, and
+            logistics coordinators — each embedded in their domain for over a
+            decade.
           </p>
         </div>
-        <div className="mt-14 h-px bg-white/[0.06]" />
       </FadeIn>
 
-      {/* Team grid */}
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-7">
+      {/* ── Team grid — compact editorial portraits ──
+          2-col from mobile, 4-col on lg.
+          Portrait pinned to max-w-[220px] so images stay editorial-small
+          regardless of column width on larger screens.               */}
+      <div className="max-w-[1400px] mx-auto mt-9 md:mt-12 grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-7 lg:gap-x-7 lg:gap-y-9">
         {TEAM.map((member, i) => {
           const isActive = activeId === member.id;
 
           return (
-            <FadeIn key={member.id} delay={i * 0.13}>
+            <FadeIn key={member.id} delay={i * 0.09}>
               <div
-                className="group cursor-pointer"
+                className="group cursor-pointer flex flex-col items-center"
                 onClick={() =>
                   setActiveId((prev) => (prev === member.id ? null : member.id))
                 }
               >
-                {/* Portrait */}
+                {/* ── Portrait — editorial size, face-safe ── */}
                 <div
-                  className="relative overflow-hidden"
-                  style={{ height: "58vh" }}
+                  className="relative overflow-hidden aspect-[3/4] w-full"
+                  style={{ maxWidth: "220px" }}
                 >
                   <motion.img
                     src={member.src}
                     alt={member.name}
-                    className="w-full h-full object-cover object-top"
-                    style={{ filter: "grayscale(100%)" }}
+                    className="w-full h-full object-cover"
+                    style={{
+                      filter:
+                        "grayscale(100%) contrast(0.9) brightness(0.94)",
+                      objectPosition: "center 12%",
+                    }}
                     whileHover={{ scale: 1.03 }}
-                    transition={{ duration: 0.85, ease: EASE }}
+                    transition={{ duration: 0.9, ease: EASE }}
                   />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/38 transition-colors duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.03] transition-colors duration-700" />
                 </div>
 
-                {/* Text */}
-                <div className="pt-8">
-                  <p className="text-[7.5px] tracking-[0.5em] text-[#BFA37A] uppercase mb-4">
+                {/* ── Info — same max-width as portrait ── */}
+                <div
+                  className="w-full pt-3 md:pt-3.5"
+                  style={{ maxWidth: "220px" }}
+                >
+                  {/* Role */}
+                  <p className="text-[5.5px] tracking-[0.5em] text-[#BFA37A] uppercase mb-1.5">
                     {member.role}
                   </p>
+
+                  {/* Name */}
                   <h3
-                    className="mb-5"
+                    className="mb-1.5"
                     style={{
                       fontFamily: "var(--font-cormorant)",
                       fontWeight: 300,
-                      fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)",
+                      fontSize: "clamp(0.82rem, 1.15vw, 1.0rem)",
                       letterSpacing: "0.04em",
                       color: "#F5F1EB",
                       lineHeight: 1.2,
@@ -1297,7 +1474,20 @@ function PeopleSection() {
                   >
                     {member.name}
                   </h3>
-                  <p className="text-[#A8A8A8] text-[11.5px] leading-[2.25] font-light">
+
+                  {/* Divider */}
+                  <div className="w-3.5 h-px bg-[#BFA37A] opacity-[0.22] mb-2" />
+
+                  {/* Description */}
+                  <p
+                    className="font-light"
+                    style={{
+                      fontSize: "9.5px",
+                      color: "#686868",
+                      lineHeight: 1.7,
+                      letterSpacing: "0.01em",
+                    }}
+                  >
                     {member.description}
                   </p>
 
@@ -1310,25 +1500,25 @@ function PeopleSection() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{
-                          height: { duration: 0.52, ease: EASE },
+                          height: { duration: 0.48, ease: EASE },
                           opacity: {
-                            duration: 0.38,
-                            delay: isActive ? 0.18 : 0,
+                            duration: 0.32,
+                            delay: isActive ? 0.15 : 0,
                           },
                         }}
                         className="overflow-hidden"
                       >
-                        <div className="pt-6">
-                          <div className="h-px bg-[#BFA37A] opacity-[0.18] mb-5" />
+                        <div className="pt-2">
+                          <div className="h-px bg-[#BFA37A] opacity-[0.12] mb-2" />
                           <p
                             style={{
                               fontFamily: "var(--font-cormorant)",
                               fontWeight: 300,
                               fontStyle: "italic",
-                              fontSize: "0.92rem",
-                              lineHeight: 2.1,
+                              fontSize: "0.78rem",
+                              lineHeight: 1.8,
                               color: "#A8A8A8",
-                              opacity: 0.8,
+                              opacity: 0.65,
                             }}
                           >
                             {member.detail}
@@ -1338,14 +1528,15 @@ function PeopleSection() {
                     )}
                   </AnimatePresence>
 
-                  {/* Toggle indicator */}
-                  <div className="mt-7 flex items-center gap-3">
+                  {/* Profile toggle */}
+                  <div className="mt-2.5 flex items-center gap-2">
                     <motion.span
-                      className="block h-px bg-[#BFA37A] opacity-35"
-                      animate={{ width: isActive ? 24 : 14 }}
-                      transition={{ duration: 0.42, ease: EASE }}
+                      className="block h-px bg-[#BFA37A]"
+                      style={{ opacity: 0.3 }}
+                      animate={{ width: isActive ? 16 : 8 }}
+                      transition={{ duration: 0.38, ease: EASE }}
                     />
-                    <span className="text-[7px] tracking-[0.42em] text-[#A8A8A8]/40 uppercase">
+                    <span className="text-[5.5px] tracking-[0.42em] text-[#A8A8A8]/30 group-hover:text-[#A8A8A8]/55 uppercase transition-colors duration-400">
                       {isActive ? "Close" : "Profile"}
                     </span>
                   </div>
@@ -1439,7 +1630,7 @@ function TestimonialsSection() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden py-32 px-6 md:px-16 lg:px-24"
+      className="relative overflow-hidden py-20 px-6 md:px-16 lg:px-24"
     >
       {TESTIMONIALS.map((item, i) => (
         <motion.div
@@ -1597,20 +1788,11 @@ function TestimonialsSection() {
 
 const LUX_EASE = [0.22, 1, 0.36, 1] as const;
 
-const CATALOGUE_CARD_VARIANTS = {
-  rest: { scale: 1 },
-  hover: { scale: 1.006 },
-};
-
-const CATALOGUE_GLOW_VARIANTS = {
-  rest: { opacity: 0 },
-  hover: { opacity: 1 },
-};
-
 function CatalogueSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-12% 0px" });
   const [focused, setFocused] = useState<string | null>(null);
+  const [btnHovered, setBtnHovered] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -1620,183 +1802,346 @@ function CatalogueSection() {
   const rightY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
 
   const FIELDS = [
-    { id: "name",     label: "Full Name",       type: "text"  },
-    { id: "email",    label: "Email Address",   type: "email" },
-    { id: "company",  label: "Company / Studio", type: "text" },
-    { id: "location", label: "Project Location", type: "text" },
+    { id: "name",     label: "Full Name",        type: "text",  placeholder: "Your full name" },
+    { id: "email",    label: "Email Address",    type: "email", placeholder: "your@studio.com" },
+    { id: "company",  label: "Company / Studio", type: "text",  placeholder: "Studio or firm name" },
+    { id: "location", label: "Project Location", type: "text",  placeholder: "City, Country" },
   ];
 
   return (
     <section
       ref={sectionRef}
       id="catalogue"
-      className="relative py-[140px] px-6 md:px-16 lg:px-24 border-t border-[#1A1A1A] overflow-hidden"
+      className="relative overflow-hidden border-t border-white/[0.04]"
+      style={{ background: "#0F0F0F" }}
     >
-      <div className="max-w-[1380px] mx-auto grid lg:grid-cols-2 gap-24 lg:gap-40 items-start">
+      {/* Ambient radial warm glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 55% at 50% -5%, rgba(191,163,122,0.04) 0%, transparent 58%)",
+        }}
+      />
 
-        {/* LEFT — content */}
+      <div className="relative z-10 max-w-[1280px] mx-auto px-5 md:px-14 lg:px-20 py-20 md:py-28 grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+
+        {/* ── LEFT — editorial content ── */}
         <motion.div
           style={{ y: leftY }}
-          initial={{ opacity: 0, x: -60 }}
+          initial={{ opacity: 0, x: -40 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 1.0, ease: LUX_EASE }}
-          className="flex flex-col gap-12 lg:sticky lg:top-28"
+          className="flex flex-col gap-9 lg:sticky lg:top-28"
         >
-          <div className="flex flex-col gap-6">
-            <p className="text-[10px] tracking-[0.45em] text-[#BFA37A] uppercase">
+          {/* Eyebrow */}
+          <div className="flex items-center gap-3">
+            <div
+              className="shrink-0 h-px bg-[#BFA37A]"
+              style={{ width: 18, opacity: 0.5 }}
+            />
+            <p className="text-[9px] tracking-[0.5em] text-[#BFA37A] uppercase">
               06 — Private Access
             </p>
+          </div>
+
+          {/* Heading */}
+          <div className="flex flex-col gap-4">
             <h2
               style={{
                 fontFamily: "var(--font-cormorant)",
                 fontWeight: 300,
-                fontSize: "clamp(2.4rem, 4.5vw, 3.6rem)",
+                fontSize: "clamp(2.1rem, 3.8vw, 3.3rem)",
                 letterSpacing: "0.03em",
-                lineHeight: 1.18,
+                lineHeight: 1.16,
                 color: "#F5F1EB",
               }}
             >
-              Request Private
+              Private Sourcing
               <br />
-              <em>Catalogue</em>
+              <em style={{ color: "#C4A87A" }}>Consultation</em>
             </h2>
             <p
-              className="text-[#A8A8A8] font-light leading-[2.2] max-w-[380px]"
-              style={{ fontSize: "0.85rem", letterSpacing: "0.02em" }}
+              className="font-light leading-[2]"
+              style={{
+                fontSize: "0.83rem",
+                color: "#787878",
+                letterSpacing: "0.02em",
+                maxWidth: "340px",
+              }}
             >
-              Gain exclusive access to our curated collection of luxury
-              furniture pieces. Reserved for architects, designers, and
-              industry professionals.
+              Reserved for architects, interior designers, and luxury
+              developers. Share your project scope and receive a tailored
+              sourcing proposal within 48 hours.
             </p>
           </div>
 
-          <div className="h-px bg-white/[0.06] max-w-[180px]" />
+          {/* Rule */}
+          <div className="w-12 h-px bg-[#BFA37A] opacity-[0.16]" />
 
-          <ul className="flex flex-col gap-7">
+          {/* Trust signals */}
+          <ul className="flex flex-col gap-6">
             {[
-              "Over 1,000+ premium pieces",
-              "Detailed specifications & pricing",
-              "Direct factory sourcing quotes",
+              {
+                label: "Curated access to 1,000+ premium pieces",
+                sub: "Factory-direct pricing available",
+              },
+              {
+                label: "Dedicated sourcing specialist assigned",
+                sub: "Response within 48 hours guaranteed",
+              },
+              {
+                label: "Confidential project brief protection",
+                sub: "NDA available on request",
+              },
             ].map((item, i) => (
               <motion.li
                 key={i}
-                initial={{ opacity: 0, x: -18 }}
+                initial={{ opacity: 0, x: -16 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.7, ease: LUX_EASE, delay: 0.32 + i * 0.12 }}
-                className="flex items-center gap-5"
+                transition={{ duration: 0.7, ease: LUX_EASE, delay: 0.3 + i * 0.1 }}
+                className="flex gap-4 items-start"
               >
-                <motion.span
+                <div
                   className="shrink-0 h-px bg-[#BFA37A]"
-                  initial={{ width: 0 }}
-                  animate={isInView ? { width: 18 } : {}}
-                  transition={{ duration: 0.55, ease: LUX_EASE, delay: 0.5 + i * 0.12 }}
-                  style={{ display: "block", opacity: 0.55 }}
+                  style={{ width: 14, opacity: 0.4, marginTop: 9 }}
                 />
-                <span
-                  className="text-[#A8A8A8] font-light leading-[1.9]"
-                  style={{ fontSize: "0.83rem", letterSpacing: "0.04em" }}
-                >
-                  {item}
-                </span>
+                <div>
+                  <p
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "#C8C2BA",
+                      fontWeight: 300,
+                      letterSpacing: "0.02em",
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    {item.label}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "0.67rem",
+                      color: "#585858",
+                      letterSpacing: "0.04em",
+                      marginTop: 3,
+                    }}
+                  >
+                    {item.sub}
+                  </p>
+                </div>
               </motion.li>
             ))}
           </ul>
         </motion.div>
 
-        {/* RIGHT — form */}
+        {/* ── RIGHT — premium form card ── */}
         <motion.div
           style={{ y: rightY }}
-          initial={{ opacity: 0, x: 60 }}
+          initial={{ opacity: 0, x: 40 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 1.1, ease: LUX_EASE, delay: 0.2 }}
+          transition={{ duration: 1.1, ease: LUX_EASE, delay: 0.15 }}
         >
-          <motion.div
-            variants={CATALOGUE_CARD_VARIANTS}
-            initial="rest"
-            whileHover="hover"
-            transition={{ duration: 0.65, ease: LUX_EASE }}
-            className="relative p-10 lg:p-14"
-            style={{ background: "#121212" }}
+          <div
+            className="relative"
+            style={{
+              background: "#141414",
+              border: "1px solid rgba(191,163,122,0.1)",
+            }}
           >
-            <motion.div
-              variants={CATALOGUE_GLOW_VARIANTS}
-              transition={{ duration: 0.5 }}
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  "radial-gradient(ellipse at 65% 25%, rgba(191,163,122,0.045) 0%, transparent 60%)",
-              }}
-            />
+            {/* Gold corner accents — top-left */}
+            <div className="absolute top-0 left-0 pointer-events-none">
+              <div style={{ position: "absolute", top: 0, left: 0, width: 1, height: 28, background: "#BFA37A", opacity: 0.42 }} />
+              <div style={{ position: "absolute", top: 0, left: 0, height: 1, width: 28, background: "#BFA37A", opacity: 0.42 }} />
+            </div>
+            {/* Gold corner accents — bottom-right */}
+            <div className="absolute bottom-0 right-0 pointer-events-none">
+              <div style={{ position: "absolute", bottom: 0, right: 0, width: 1, height: 28, background: "#BFA37A", opacity: 0.42 }} />
+              <div style={{ position: "absolute", bottom: 0, right: 0, height: 1, width: 28, background: "#BFA37A", opacity: 0.42 }} />
+            </div>
 
-            <div className="relative z-10 flex flex-col gap-9">
-              {FIELDS.map(({ id, label, type }) => (
-                <div key={id} className="relative pb-3">
+            {/* Form header strip */}
+            <div className="px-8 md:px-10 pt-8 md:pt-10 pb-6 border-b border-white/[0.05]">
+              <p className="text-[7.5px] tracking-[0.52em] text-[#BFA37A] uppercase mb-1.5">
+                Consultation Request
+              </p>
+              <p style={{ fontSize: "10.5px", color: "#6E6A62", letterSpacing: "0.03em" }}>
+                All information is held in strict confidence.
+              </p>
+            </div>
+
+            {/* Fields */}
+            <div className="px-8 md:px-10 py-8 md:py-10 flex flex-col gap-7">
+              {FIELDS.map(({ id, label, type, placeholder }) => (
+                <div
+                  key={id}
+                  style={{
+                    background:
+                      focused === id
+                        ? "rgba(191,163,122,0.024)"
+                        : "transparent",
+                    margin: "0 -4px",
+                    padding: "0 4px",
+                    transition: "background 0.4s ease",
+                  }}
+                >
                   <label
                     htmlFor={id}
-                    className="block text-[9px] tracking-[0.4em] text-[#A8A8A8] uppercase mb-3"
+                    style={{
+                      display: "block",
+                      fontSize: "7.5px",
+                      letterSpacing: "0.45em",
+                      color: focused === id ? "#C4A87A" : "#8A8880",
+                      textTransform: "uppercase",
+                      marginBottom: 10,
+                      transition: "color 0.32s ease",
+                    }}
                   >
                     {label}
                   </label>
                   <input
                     id={id}
                     type={type}
+                    placeholder={placeholder}
                     onFocus={() => setFocused(id)}
                     onBlur={() => setFocused(null)}
-                    className="w-full bg-transparent text-[#F5F1EB] text-sm font-light outline-none placeholder:text-[#2E2E2E] pb-1"
-                    style={{ letterSpacing: "0.03em" }}
+                    className="w-full bg-transparent outline-none font-light pb-2.5 placeholder:text-[#686460]"
+                    style={{
+                      color: "#EDE8DF",
+                      fontSize: "13px",
+                      letterSpacing: "0.02em",
+                      caretColor: "#BFA37A",
+                    }}
                   />
-                  <div className="absolute bottom-0 left-0 right-0 h-px bg-[#2A2A2A]" />
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-px bg-[#BFA37A] origin-left"
-                    animate={{ scaleX: focused === id ? 1 : 0 }}
-                    transition={{ duration: 0.42, ease: LUX_EASE }}
+                  <div
+                    style={{
+                      height: 1,
+                      background:
+                        focused === id
+                          ? "rgba(191,163,122,0.7)"
+                          : "rgba(255,255,255,0.13)",
+                      transition: "background 0.32s ease",
+                    }}
                   />
                 </div>
               ))}
 
-              <div className="relative pb-3">
+              {/* Project brief textarea */}
+              <div
+                style={{
+                  background:
+                    focused === "brief"
+                      ? "rgba(191,163,122,0.024)"
+                      : "transparent",
+                  margin: "0 -4px",
+                  padding: "0 4px",
+                  transition: "background 0.4s ease",
+                }}
+              >
                 <label
-                  htmlFor="details"
-                  className="block text-[9px] tracking-[0.4em] text-[#A8A8A8] uppercase mb-3"
+                  htmlFor="brief"
+                  style={{
+                    display: "block",
+                    fontSize: "7.5px",
+                    letterSpacing: "0.45em",
+                    color: focused === "brief" ? "#C4A87A" : "#8A8880",
+                    textTransform: "uppercase",
+                    marginBottom: 10,
+                    transition: "color 0.32s ease",
+                  }}
                 >
-                  Project Details
+                  Project Brief
                 </label>
                 <textarea
-                  id="details"
+                  id="brief"
                   rows={3}
-                  onFocus={() => setFocused("details")}
+                  placeholder="Describe your project scope, timeline, and furniture requirements…"
+                  onFocus={() => setFocused("brief")}
                   onBlur={() => setFocused(null)}
-                  className="w-full bg-transparent text-[#F5F1EB] text-sm font-light outline-none placeholder:text-[#2E2E2E] resize-none pb-1"
-                  style={{ letterSpacing: "0.03em" }}
+                  className="w-full bg-transparent outline-none font-light resize-none pb-2.5 placeholder:text-[#686460]"
+                  style={{
+                    color: "#EDE8DF",
+                    fontSize: "13px",
+                    letterSpacing: "0.02em",
+                    caretColor: "#BFA37A",
+                  }}
                 />
-                <div className="absolute bottom-0 left-0 right-0 h-px bg-[#2A2A2A]" />
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-px bg-[#BFA37A] origin-left"
-                  animate={{ scaleX: focused === "details" ? 1 : 0 }}
-                  transition={{ duration: 0.42, ease: LUX_EASE }}
+                <div
+                  style={{
+                    height: 1,
+                    background:
+                      focused === "brief"
+                        ? "rgba(191,163,122,0.7)"
+                        : "rgba(255,255,255,0.13)",
+                    transition: "background 0.32s ease",
+                  }}
                 />
               </div>
 
-              <div className="pt-6">
+              {/* CTA button — fill sweep on hover */}
+              <div className="pt-3">
                 <motion.button
                   type="submit"
-                  whileHover={{ backgroundColor: "#BFA37A", color: "#0E0E0E" }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.38, ease: LUX_EASE }}
-                  className="w-full border border-[#BFA37A] py-[18px] text-[9px] tracking-[0.5em] text-[#F5F1EB] uppercase font-light cursor-pointer"
-                  style={{ backgroundColor: "transparent" }}
+                  onHoverStart={() => setBtnHovered(true)}
+                  onHoverEnd={() => setBtnHovered(false)}
+                  whileTap={{ scale: 0.985 }}
+                  className="relative w-full overflow-hidden cursor-pointer"
+                  style={{
+                    padding: "18px 24px",
+                    border: "1px solid rgba(191,163,122,0.48)",
+                  }}
                 >
-                  Request Access
+                  {/* Gold fill sweep */}
+                  <motion.div
+                    className="absolute inset-0"
+                    style={{ background: "#BFA37A", transformOrigin: "left" }}
+                    animate={{ scaleX: btnHovered ? 1 : 0 }}
+                    transition={{ duration: 0.44, ease: LUX_EASE }}
+                  />
+                  {/* Label + arrow */}
+                  <span className="relative z-10 flex items-center justify-center gap-3">
+                    <motion.span
+                      animate={{ color: btnHovered ? "#0E0E0E" : "#C4A87A" }}
+                      transition={{ duration: 0.26 }}
+                      style={{
+                        fontSize: "8px",
+                        letterSpacing: "0.5em",
+                        textTransform: "uppercase",
+                        fontWeight: 300,
+                      }}
+                    >
+                      Request Private Access
+                    </motion.span>
+                    <motion.svg
+                      width="15"
+                      height="7"
+                      viewBox="0 0 15 7"
+                      fill="none"
+                      animate={{
+                        x: btnHovered ? 4 : 0,
+                        color: btnHovered ? "#0E0E0E" : "#C4A87A",
+                      }}
+                      transition={{ duration: 0.28 }}
+                    >
+                      <path
+                        d="M0 3.5H14M14 3.5L10.5 1M14 3.5L10.5 6"
+                        stroke="currentColor"
+                        strokeWidth="0.7"
+                      />
+                    </motion.svg>
+                  </span>
                 </motion.button>
-                <p
-                  className="mt-5 text-center text-[#A8A8A8]"
-                  style={{ fontSize: "0.68rem", letterSpacing: "0.14em" }}
-                >
-                  Your details are kept strictly confidential.
-                </p>
+
+                {/* Privacy note */}
+                <div className="mt-5 flex items-center justify-center gap-3">
+                  <div className="shrink-0 h-px bg-[#BFA37A]" style={{ width: 16, opacity: 0.16 }} />
+                  <p style={{ fontSize: "0.62rem", color: "#464646", letterSpacing: "0.16em" }}>
+                    Strictly confidential. No obligation.
+                  </p>
+                  <div className="shrink-0 h-px bg-[#BFA37A]" style={{ width: 16, opacity: 0.16 }} />
+                </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
 
       </div>
@@ -1817,7 +2162,7 @@ function ContactSection() {
     <section
       ref={ref}
       id="contact"
-      className="relative py-28 px-6 md:px-16 lg:px-24 overflow-hidden"
+      className="relative py-20 px-6 md:px-16 lg:px-24 overflow-hidden"
     >
       <div
         className="absolute inset-0 pointer-events-none"
@@ -1966,6 +2311,14 @@ function ContactSection() {
 
 /* ── FooterSection ───────────────────────────────────────── */
 
+const FOOTER_NAV = [
+  { label: "Our Categories",   href: "#collection" },
+  { label: "Sourcing Services", href: "#process"    },
+  { label: "Featured Projects", href: "#projects"   },
+  { label: "Request Catalogue", href: "#catalogue"  },
+  { label: "Contact",           href: "#contact"    },
+];
+
 function FooterSection() {
   return (
     <footer
@@ -1973,51 +2326,52 @@ function FooterSection() {
       style={{ background: "#0E0E0E" }}
     >
       {/* Main columns */}
-      <div className="max-w-[1400px] mx-auto px-8 md:px-14 lg:px-20 py-20 md:py-28 grid grid-cols-1 md:grid-cols-3 gap-14 lg:gap-24">
+      <div className="max-w-[1400px] mx-auto px-8 md:px-14 lg:px-20 py-16 md:py-20 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14 lg:gap-20">
 
         {/* LEFT — Brand */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-5">
           <Image
             src="/logo.png"
             alt="CFS"
-            width={80}
-            height={32}
-            className="h-8 w-auto object-contain self-start"
+            width={72}
+            height={28}
+            className="h-7 w-auto object-contain self-start"
           />
           <p
-            className="text-[#F5F1EB] uppercase font-light"
-            style={{ fontSize: "0.7rem", letterSpacing: "0.22em" }}
+            className="text-[#D8D2C8] uppercase font-light"
+            style={{ fontSize: "0.65rem", letterSpacing: "0.22em" }}
           >
             China Furniture Sourcing
           </p>
           <p
-            className="text-[#A8A8A8] font-light leading-[1.9]"
-            style={{ fontSize: "0.78rem", letterSpacing: "0.02em", maxWidth: "260px" }}
+            className="text-[#686862] font-light leading-[1.85]"
+            style={{ fontSize: "0.74rem", letterSpacing: "0.02em", maxWidth: "240px" }}
           >
             Premium furniture sourcing and manufacturing from Guangzhou, China — built for architects, designers, and global developers.
           </p>
         </div>
 
         {/* CENTER — Navigation */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-5">
           <p
-            className="text-[#A8A8A8] uppercase"
-            style={{ fontSize: "0.65rem", letterSpacing: "0.38em" }}
+            className="text-[#484844] uppercase"
+            style={{ fontSize: "0.6rem", letterSpacing: "0.42em" }}
           >
             Navigation
           </p>
-          <nav className="flex flex-col gap-[14px]">
-            {[
-              { label: "Our Collections",   href: "#collection" },
-              { label: "Sourcing Services", href: "#capabilities" },
-              { label: "Featured Projects", href: "#" },
-              { label: "Request Catalogue", href: "#catalogue" },
-            ].map(({ label, href }) => (
+          <nav className="flex flex-col gap-[11px]">
+            {FOOTER_NAV.map(({ label, href }) => (
               <a
                 key={label}
                 href={href}
-                className="text-[#A8A8A8] hover:text-[#BFA37A] transition-colors duration-300 font-light"
-                style={{ fontSize: "0.78rem", letterSpacing: "0.06em" }}
+                className="font-light transition-colors duration-300"
+                style={{
+                  fontSize: "0.73rem",
+                  letterSpacing: "0.05em",
+                  color: "#686862",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#BFA37A")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#686862")}
               >
                 {label}
               </a>
@@ -2026,31 +2380,35 @@ function FooterSection() {
         </div>
 
         {/* RIGHT — Contact */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-5">
           <p
-            className="text-[#A8A8A8] uppercase"
-            style={{ fontSize: "0.65rem", letterSpacing: "0.38em" }}
+            className="text-[#484844] uppercase"
+            style={{ fontSize: "0.6rem", letterSpacing: "0.42em" }}
           >
-            Contact
+            Get in Touch
           </p>
-          <div className="flex flex-col gap-[14px]">
+          <div className="flex flex-col gap-[11px]">
             <a
               href="mailto:chinacfsourcing.info@gmail.com"
-              className="text-[#A8A8A8] hover:text-[#BFA37A] transition-colors duration-300 font-light"
-              style={{ fontSize: "0.78rem", letterSpacing: "0.03em" }}
+              className="font-light transition-colors duration-300"
+              style={{ fontSize: "0.73rem", letterSpacing: "0.02em", color: "#686862" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#BFA37A")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#686862")}
             >
               chinacfsourcing.info@gmail.com
             </a>
             <a
               href="tel:+8618688246482"
-              className="text-[#A8A8A8] hover:text-[#BFA37A] transition-colors duration-300 font-light"
-              style={{ fontSize: "0.78rem", letterSpacing: "0.03em" }}
+              className="font-light transition-colors duration-300"
+              style={{ fontSize: "0.73rem", letterSpacing: "0.02em", color: "#686862" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#BFA37A")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#686862")}
             >
               +86 186 8824 6482
             </a>
             <p
-              className="text-[#A8A8A8] font-light"
-              style={{ fontSize: "0.78rem", letterSpacing: "0.03em" }}
+              className="font-light"
+              style={{ fontSize: "0.73rem", letterSpacing: "0.02em", color: "#484844" }}
             >
               Guangzhou, China
             </p>
@@ -2060,20 +2418,22 @@ function FooterSection() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-[#1C1C1C] max-w-[1400px] mx-auto px-8 md:px-14 lg:px-20 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="border-t border-[#161616] max-w-[1400px] mx-auto px-8 md:px-14 lg:px-20 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
         <p
-          className="text-[#A8A8A8] font-light"
-          style={{ fontSize: "0.68rem", letterSpacing: "0.14em" }}
+          className="font-light"
+          style={{ fontSize: "0.64rem", letterSpacing: "0.14em", color: "#404040" }}
         >
           © 2026 CFS. All rights reserved.
         </p>
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6">
           {["Privacy Policy", "Terms"].map((item) => (
             <a
               key={item}
               href="#"
-              className="text-[#A8A8A8] hover:text-[#F5F1EB] transition-colors duration-300 font-light"
-              style={{ fontSize: "0.68rem", letterSpacing: "0.14em" }}
+              className="font-light transition-colors duration-300"
+              style={{ fontSize: "0.64rem", letterSpacing: "0.14em", color: "#404040" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#F5F1EB")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#404040")}
             >
               {item}
             </a>
@@ -2111,62 +2471,37 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/25" />
 
         <div className="relative z-10 h-full flex flex-col justify-center px-8 md:px-20 lg:px-28 pb-24 pt-28 max-w-[860px]">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.35, ease: EASE }}
-            className="text-[9px] tracking-[0.6em] text-[#BFA37A] uppercase mb-7"
-          >
-            Global Furniture Manufacturer
-          </motion.p>
-
           <motion.h1
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, delay: 0.55, ease: EASE }}
+            transition={{ duration: 1.5, delay: 0.45, ease: EASE }}
             style={{
-              fontFamily: "var(--font-playfair)",
-              fontWeight: 400,
-              fontSize: "clamp(2.6rem, 5.2vw, 5.2rem)",
-              lineHeight: 1.1,
+              fontFamily: "var(--font-cormorant)",
+              fontWeight: 300,
+              fontSize: "clamp(3.2rem, 6.4vw, 7rem)",
+              lineHeight: 1.04,
               letterSpacing: "0.01em",
               color: "#F5F1EB",
             }}
           >
-            Global Sourcing
+            Global Sourcing &amp;
           </motion.h1>
 
           <motion.h1
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, delay: 0.65, ease: EASE }}
+            transition={{ duration: 1.5, delay: 0.62, ease: EASE }}
             style={{
-              fontFamily: "var(--font-playfair)",
-              fontWeight: 400,
-              fontSize: "clamp(2.6rem, 5.2vw, 5.2rem)",
-              lineHeight: 1.1,
-              letterSpacing: "0.01em",
-              color: "#F5F1EB",
-            }}
-          >
-            &amp;
-          </motion.h1>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, delay: 0.75, ease: EASE }}
-            style={{
-              fontFamily: "var(--font-playfair)",
-              fontWeight: 400,
+              fontFamily: "var(--font-cormorant)",
+              fontWeight: 300,
               fontStyle: "italic",
-              fontSize: "clamp(2.6rem, 5.2vw, 5.2rem)",
-              lineHeight: 1.1,
+              fontSize: "clamp(3.2rem, 6.4vw, 7rem)",
+              lineHeight: 1.04,
               letterSpacing: "0.01em",
               color: "#BFA37A",
             }}
           >
-            logistic solution.
+            Logistics Solutions.
           </motion.h1>
 
           <motion.p
@@ -2193,7 +2528,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.3, delay: 1.2, ease: EASE }}
-            className="mt-10 flex flex-col sm:flex-row gap-4"
+            className="mt-10"
           >
             <motion.a
               href="https://wa.me/8618688246482"
@@ -2201,20 +2536,10 @@ export default function Home() {
               rel="noopener noreferrer"
               whileHover={{ backgroundColor: "#BFA37A", borderColor: "#BFA37A", color: "#0E0E0E" }}
               whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.3 }}
-              className="border border-[#BFA37A] px-8 py-3.5 text-[9px] tracking-[0.45em] text-[#F5F1EB] uppercase font-light cursor-pointer whitespace-nowrap"
+              transition={{ duration: 0.35 }}
+              className="inline-flex items-center gap-4 border border-[#BFA37A] px-10 py-4 text-[9px] tracking-[0.5em] text-[#BFA37A] uppercase font-light cursor-pointer"
             >
-              Request Private Catalogue
-            </motion.a>
-
-            <motion.a
-              href="#collection"
-              whileHover={{ backgroundColor: "rgba(245,241,235,0.07)", borderColor: "rgba(245,241,235,0.4)" }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.3 }}
-              className="border border-[#F5F1EB]/20 px-8 py-3.5 text-[9px] tracking-[0.45em] text-[#A8A8A8] uppercase font-light cursor-pointer whitespace-nowrap"
-            >
-              Explore Collection
+              Schedule Appointment
             </motion.a>
           </motion.div>
         </div>
@@ -2239,29 +2564,31 @@ export default function Home() {
       </section>
 
       {/* ── STATS ─────────────────────────────────────────── */}
-      <section className="relative bg-[#0E0E0E] py-24 px-6 md:px-16 lg:px-24">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-y-16 gap-x-8">
+      <section className="relative bg-[#0E0E0E] py-16 px-6 md:px-16 lg:px-24">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-8">
           {[
-            { to: 90,    suffix: "+", label: "Verified Manufacturers" },
-            { to: 6,     suffix: "+", label: "Countries Served"       },
-            { to: 10000, suffix: "+", label: "Pieces Delivered"       },
-            { to: 100,   suffix: "%", label: "Quality Assured"        },
+            { to: 90,    suffix: "+", label: "Verified Manufacturers"  },
+            { to: 6,     suffix: "+", label: "Countries Served"        },
+            { to: 10000, suffix: "+", label: "Pieces Delivered"        },
+            { to: 100,   suffix: "%", label: "Quality Assured"         },
           ].map((stat, i) => (
             <FadeIn key={i} delay={i * 0.14} className="flex flex-col items-center text-center">
               <p
                 style={{
-                  fontFamily: "var(--font-playfair)",
-                  fontWeight: 400,
-                  fontSize: "clamp(2.8rem, 5vw, 4.8rem)",
+                  fontFamily: "var(--font-cormorant)",
+                  fontWeight: 300,
+                  fontSize: "clamp(2.8rem, 5vw, 5rem)",
                   lineHeight: 1,
-                  color: "#F5F1EB",
-                  letterSpacing: "-0.01em",
+                  color: "#EDE8DF",
+                  letterSpacing: "0.02em",
+                  fontVariantNumeric: "lining-nums",
+                  fontFeatureSettings: '"lnum" 1, "tnum" 1',
                 }}
               >
                 <CountUp to={stat.to} suffix={stat.suffix} />
               </p>
-              <div className="mt-5 w-7 h-px bg-[#BFA37A] opacity-80" />
-              <p className="mt-4 text-[9px] tracking-[0.5em] text-[#A8A8A8] uppercase">
+              <div className="mt-3 w-6 h-px bg-[#BFA37A] opacity-70" />
+              <p className="mt-2.5 text-[8px] tracking-[0.22em] text-[#C4BFB7] uppercase leading-[1.6] font-semibold">
                 {stat.label}
               </p>
             </FadeIn>
@@ -2271,14 +2598,35 @@ export default function Home() {
       </section>
 
       {/* ── 2. BRAND STATEMENT ────────────────────────────── */}
-      <section className="px-6 md:px-20 py-32 max-w-3xl mx-auto text-center">
+      <section className="px-6 md:px-20 py-20 max-w-3xl mx-auto text-center">
         <FadeIn>
-          <p
-            className="text-[#A8A8A8] leading-[2.4] font-light"
+          <h2
             style={{
               fontFamily: "var(--font-cormorant)",
               fontWeight: 300,
-              fontSize: "clamp(1.1rem, 2vw, 1.35rem)",
+              fontSize: "clamp(2.1rem, 4.2vw, 3.8rem)",
+              lineHeight: 1.16,
+              letterSpacing: "0.01em",
+              color: "#F5F1EB",
+            }}
+          >
+            The Architecture of<br className="hidden sm:block" /> Global Sourcing
+          </h2>
+        </FadeIn>
+
+        <FadeIn delay={0.18}>
+          <div className="mx-auto mt-8 mb-8 w-8 h-px bg-[#BFA37A] opacity-50" />
+        </FadeIn>
+
+        <FadeIn delay={0.3}>
+          <p
+            className="text-[#A8A8A8] font-light"
+            style={{
+              fontFamily: "var(--font-cormorant)",
+              fontWeight: 300,
+              fontSize: "clamp(1.05rem, 1.8vw, 1.3rem)",
+              lineHeight: 2.15,
+              letterSpacing: "0.01em",
             }}
           >
             We are a global furniture sourcing company with in-house manufacturing
@@ -2308,145 +2656,146 @@ export default function Home() {
       <TestimonialsSection />
 
       {/* ── 6. PROCESS ────────────────────────────────────── */}
-      <section id="process" className="bg-[#080808] border-t border-white/[0.04]">
+      <section id="process" className="bg-[#0E0E0E] border-t border-white/[0.05]">
 
-        {/* Header */}
-        <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 pt-28 pb-16">
+        {/* ── Header ── */}
+        <div className="max-w-[1400px] mx-auto px-5 md:px-14 lg:px-20">
           <FadeIn>
-            <p className="text-[9px] tracking-[0.55em] uppercase mb-7" style={{ color: "#5A5350" }}>
-              How We Work
-            </p>
-            <h2
-              style={{
-                fontFamily: "var(--font-cormorant)",
-                fontWeight: 300,
-                fontSize: "clamp(2.6rem, 5vw, 4rem)",
-                letterSpacing: "0.04em",
-                color: "#F5F1EB",
-                lineHeight: 1.1,
-              }}
-            >
-              Five steps.<br />
-              <em>Zero loose ends.</em>
-            </h2>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-20 pt-14 md:pt-[68px] pb-8 md:pb-10 border-b border-white/[0.06]">
+              <div>
+                <p className="text-[8px] tracking-[0.55em] text-[#BFA37A] uppercase mb-4">
+                  05 — Process
+                </p>
+                <h2
+                  style={{
+                    fontFamily: "var(--font-cormorant)",
+                    fontWeight: 300,
+                    fontSize: "clamp(1.9rem, 3.5vw, 3rem)",
+                    letterSpacing: "0.05em",
+                    color: "#F5F1EB",
+                    lineHeight: 1.12,
+                  }}
+                >
+                  Five Steps.
+                  <br />
+                  <em style={{ color: "#9A9690" }}>Zero Loose Ends.</em>
+                </h2>
+              </div>
+              <p
+                className="font-light max-w-[280px] md:pb-0.5"
+                style={{ fontSize: "11px", color: "#646464", lineHeight: "1.85", letterSpacing: "0.01em" }}
+              >
+                A precise, transparent sourcing journey — from first consultation to final installation — built around your project's highest expectations.
+              </p>
+            </div>
           </FadeIn>
         </div>
 
-        {/* Editorial Steps */}
-        <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 pb-28">
-          {processSteps.map((step, i) => {
-            const isEven = i % 2 === 0;
-            const stepIcons = [
-              <svg key="s0" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><circle cx="11" cy="11" r="9"/><line x1="6" y1="9" x2="16" y2="9"/><line x1="6" y1="13" x2="12" y2="13"/></svg>,
-              <svg key="s1" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><line x1="2" y1="19" x2="20" y2="19"/><rect x="4" y="9" width="4" height="10"/><rect x="14" y="12" width="4" height="7"/><line x1="11" y1="2" x2="11" y2="9"/><polyline points="8.5,4.5 11,2 13.5,4.5"/></svg>,
-              <svg key="s2" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><polygon points="11,1 21,11 11,21 1,11"/><line x1="11" y1="1" x2="11" y2="21"/><line x1="1" y1="11" x2="21" y2="11"/></svg>,
-              <svg key="s3" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><path d="M11 2 L19 5.5 L19 11.5 C19 16.2 15.5 19.5 11 21 C6.5 19.5 3 16.2 3 11.5 L3 5.5 Z"/><polyline points="7,11 10,14 15,8.5"/></svg>,
-              <svg key="s4" width="20" height="20" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="0.75"><circle cx="11" cy="11" r="9"/><polyline points="11,5 11,11 15,14"/></svg>,
-            ];
-            return (
-              <FadeIn key={i} delay={i * 0.07}>
-                <div
-                  className={`border-t border-white/[0.05] flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-8 md:gap-14 py-10 md:py-14 group`}
+        {/* ── Editorial step rows ── */}
+        <div className="max-w-[1400px] mx-auto px-5 md:px-14 lg:px-20 pb-14 md:pb-[80px]">
+          {processSteps.map((step, i) => (
+            <FadeIn key={i} delay={i * 0.06}>
+              <div className="border-b border-white/[0.05] py-8 md:py-10">
+                {/*
+                  3-column desktop grid:
+                    [60px number spine] [flex content] [auto image ~38%]
+                  Mobile: image on top, then number+title+desc below
+                */}
+                <div className="flex flex-col md:grid md:gap-x-10 lg:gap-x-14 md:items-start"
+                  style={{ gridTemplateColumns: "60px 1fr 38%" }}
                 >
-                  {/* Image card */}
+                  {/* ── Image — first on mobile, last on desktop ── */}
                   <div
-                    className="relative overflow-hidden shrink-0 w-full md:w-[38%] border border-white/[0.05]"
-                    style={{ height: "260px", borderRadius: "2px" }}
+                    className="relative overflow-hidden w-full mb-6 md:mb-0 md:order-last group/img"
+                    style={{ aspectRatio: "16/10" }}
                   >
                     <motion.img
                       src={step.img}
                       alt={step.title}
                       className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.06 }}
-                      transition={{ duration: 1.6, ease: EASE }}
-                      style={{ filter: "brightness(0.68) contrast(1.1) saturate(0.8)" }}
+                      whileHover={{ scale: 1.04 }}
+                      transition={{ duration: 1.2, ease: EASE }}
+                      style={{
+                        filter: "brightness(0.84) contrast(1.04) saturate(0.82)",
+                      }}
                     />
-                    {/* Subtle vignette */}
+                    {/* Soft vignette overlay */}
                     <div
                       className="absolute inset-0 pointer-events-none"
-                      style={{ background: "linear-gradient(to bottom, rgba(8,8,8,0.18) 0%, transparent 30%, transparent 65%, rgba(8,8,8,0.45) 100%)" }}
+                      style={{
+                        background:
+                          "linear-gradient(135deg, transparent 55%, rgba(14,14,14,0.28) 100%)",
+                      }}
                     />
-                    {/* Ghost number — small, bottom corner */}
-                    <div className="absolute bottom-3 right-4 pointer-events-none select-none">
-                      <span
-                        style={{
-                          fontFamily: "var(--font-cormorant)",
-                          fontWeight: 300,
-                          fontSize: "3.5rem",
-                          color: "rgba(200, 165, 110, 0.09)",
-                          lineHeight: 1,
-                          letterSpacing: "-0.02em",
-                        }}
-                      >
-                        {step.num}
-                      </span>
-                    </div>
                   </div>
 
-                  {/* Content */}
-                  <div className="flex flex-col flex-1 min-w-0">
-                    {/* Decorative number — warm bronze ghost */}
-                    <p
-                      className="mb-3 leading-none select-none"
+                  {/* ── Step number — spine ── */}
+                  <div className="hidden md:flex flex-col pt-0.5">
+                    <span
                       style={{
                         fontFamily: "var(--font-cormorant)",
-                        fontSize: "clamp(2.8rem, 4.5vw, 4rem)",
                         fontWeight: 300,
-                        color: "rgba(162, 134, 94, 0.22)",
+                        fontSize: "clamp(1.5rem, 2.2vw, 2rem)",
+                        color: "#BFA37A",
+                        lineHeight: 1,
                         letterSpacing: "0.02em",
-                        textShadow: "0 0 60px rgba(190, 155, 100, 0.12), 0 0 120px rgba(190, 155, 100, 0.06)",
+                        opacity: 0.6,
                       }}
+                    >
+                      {step.num}
+                    </span>
+                  </div>
+
+                  {/* ── Content ── */}
+                  <div className="flex flex-col min-w-0">
+                    {/* Mobile: small inline number */}
+                    <p
+                      className="md:hidden text-[8px] tracking-[0.45em] text-[#BFA37A] uppercase mb-2"
+                      style={{ opacity: 0.65 }}
                     >
                       {step.num}
                     </p>
 
                     {/* Title */}
                     <h3
-                      className="mb-4"
+                      className="mb-3"
                       style={{
                         fontFamily: "var(--font-cormorant)",
                         fontWeight: 300,
-                        fontSize: "clamp(1.3rem, 2vw, 1.75rem)",
-                        letterSpacing: "0.055em",
-                        color: "#C8C3BA",
+                        fontSize: "clamp(1.1rem, 1.7vw, 1.55rem)",
+                        letterSpacing: "0.04em",
+                        color: "#D4CFC6",
                         lineHeight: 1.25,
                       }}
                     >
                       {step.title}
                     </h3>
 
-                    {/* Hairline */}
-                    <div className="mb-5 h-px" style={{ width: "2rem", background: "rgba(162, 134, 94, 0.2)" }} />
+                    {/* Gold hairline */}
+                    <div
+                      className="mb-3.5"
+                      style={{ width: "1.5rem", height: "1px", background: "#BFA37A", opacity: 0.22 }}
+                    />
 
                     {/* Description */}
                     <p
-                      className="mb-8"
                       style={{
-                        fontSize: "0.77rem",
-                        letterSpacing: "0.025em",
-                        color: "#625D58",
+                        fontSize: "11.5px",
+                        color: "#7A7875",
                         fontWeight: 300,
-                        lineHeight: 2.2,
-                        maxWidth: "400px",
+                        lineHeight: 1.95,
+                        letterSpacing: "0.01em",
+                        maxWidth: "420px",
                       }}
                     >
                       {step.desc}
                     </p>
-
-                    {/* Icon */}
-                    <motion.div
-                      style={{ color: "#3A3530" }}
-                      whileHover={{ color: "#625D58" }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {stepIcons[i]}
-                    </motion.div>
                   </div>
                 </div>
-              </FadeIn>
-            );
-          })}
-          <div className="border-t border-white/[0.05]" />
+              </div>
+            </FadeIn>
+          ))}
+          <div className="border-b border-white/[0.04]" />
         </div>
       </section>
 
