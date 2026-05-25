@@ -362,7 +362,7 @@ const CATEGORIES: Category[] = [
     heading: "Living Systems",
     description:
       "Precision-crafted sofa systems, modular seating, and lounge configurations sourced directly from China's finest upholstery ateliers — built for luxury residential and hospitality settings.",
-    coverImage: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85",
+    coverImage: "/living-systems.jpg",
     images: [
       { src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=85", alt: "Luxury sofa system" },
       { src: "https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1200&q=85", alt: "Warm living interior" },
