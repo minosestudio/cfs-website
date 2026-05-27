@@ -32,7 +32,7 @@ function Navbar() {
 
   const navLinks = [
     { label: "Categories", href: "#collection", num: "01" },
-    { label: "Services",   href: "#process",    num: "02" },
+    { label: "Services",   href: "#expertise",  num: "02" },
     { label: "Projects",   href: "#projects",   num: "03" },
     { label: "Contact",    href: "#contact",    num: "04" },
   ];
@@ -1398,7 +1398,7 @@ function PeopleSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-20 pb-7 md:pb-9 border-b border-white/[0.07]">
           <div>
             <p className="text-[8px] tracking-[0.55em] text-[#BFA37A] uppercase mb-4">
-              04 — Leadership
+              Leadership
             </p>
             <h2
               style={{
@@ -2331,8 +2331,8 @@ function ContactSection() {
 /* ── FooterSection ───────────────────────────────────────── */
 
 const FOOTER_NAV = [
-  { label: "Our Categories",   href: "#collection" },
-  { label: "Sourcing Services", href: "#process"    },
+  { label: "Our Categories",    href: "#collection" },
+  { label: "Sourcing Services", href: "#expertise"  },
   { label: "Featured Projects", href: "#projects"   },
   { label: "Request Catalogue", href: "#catalogue"  },
   { label: "Contact",           href: "#contact"    },
@@ -2659,22 +2659,19 @@ export default function Home() {
 
       <FadeIn className="w-px h-20 bg-[#BFA37A] opacity-20 mx-auto" />
 
-      {/* ── 3. OUR COLLECTION ─────────────────────────────── */}
+      {/* ── 01. CATEGORIES ───────────────────────────────── */}
       <OurCollection />
 
-      {/* ── 3b. OUR EXPERTISE ─────────────────────────────── */}
+      {/* ── 02. SERVICES ─────────────────────────────────── */}
       <OurExpertise />
 
-      {/* ── 3c. FEATURED WORK ─────────────────────────────── */}
+      {/* ── 03. PROJECTS ─────────────────────────────────── */}
       <FeaturedWork />
 
-      {/* ── 3d. PEOPLE BEHIND THE PROCESS ────────────────── */}
+      {/* ── LEADERSHIP ───────────────────────────────────── */}
       <PeopleSection />
 
-      {/* ── 3e. CLIENT VOICE ──────────────────────────────── */}
-      <TestimonialsSection />
-
-      {/* ── 6. PROCESS ────────────────────────────────────── */}
+      {/* ── 04. PROCESS ───────────────────────────────────── */}
       <section id="process" className="bg-[#0E0E0E] border-t border-white/[0.05]">
 
         {/* ── Header ── */}
@@ -2683,7 +2680,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-20 pt-14 md:pt-[68px] pb-8 md:pb-10 border-b border-white/[0.06]">
               <div>
                 <p className="text-[8px] tracking-[0.55em] text-[#BFA37A] uppercase mb-4">
-                  05 — Process
+                  04 — Process
                 </p>
                 <h2
                   style={{
@@ -2818,10 +2815,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 7b. PRIVATE CATALOGUE ────────────────────────── */}
+      {/* ── 05. CLIENT VOICE ──────────────────────────────── */}
+      <TestimonialsSection />
+
+      {/* ── 06. PRIVATE CATALOGUE ────────────────────────── */}
       <CatalogueSection />
 
-      {/* ── 8. CONTACT ────────────────────────────────────── */}
+      {/* ── 07. CONTACT ───────────────────────────────────── */}
       <ContactSection />
 
       {/* ── FOOTER ────────────────────────────────────────── */}
