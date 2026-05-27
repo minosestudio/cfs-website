@@ -1398,7 +1398,7 @@ function PeopleSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-20 pb-7 md:pb-9 border-b border-white/[0.07]">
           <div>
             <p className="text-[8px] tracking-[0.55em] text-[#BFA37A] uppercase mb-4">
-              Leadership
+              04 — Leadership
             </p>
             <h2
               style={{
@@ -1673,7 +1673,7 @@ function TestimonialsSection() {
           transition={{ duration: 0.75, ease: EASE }}
         >
           <p className="text-[10px] tracking-[0.45em] text-[#BFA37A] uppercase mb-6">
-            05 — Client Voice
+            06 — Client Voice
           </p>
           <h2
             className="text-[#F5F1EB] mb-6"
@@ -1860,7 +1860,7 @@ function CatalogueSection() {
               style={{ width: 18, opacity: 0.5 }}
             />
             <p className="text-[9px] tracking-[0.5em] text-[#BFA37A] uppercase">
-              06 — Private Access
+              07 — Private Access
             </p>
           </div>
 
@@ -2200,7 +2200,7 @@ function ContactSection() {
           className="text-center mb-20"
         >
           <p className="text-[10px] tracking-[0.45em] text-[#BFA37A] uppercase mb-6">
-            07 — Contact
+            08 — Contact
           </p>
           <h2
             style={{
@@ -2680,7 +2680,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-20 pt-14 md:pt-[68px] pb-8 md:pb-10 border-b border-white/[0.06]">
               <div>
                 <p className="text-[8px] tracking-[0.55em] text-[#BFA37A] uppercase mb-4">
-                  04 — Process
+                  05 — Process
                 </p>
                 <h2
                   style={{
