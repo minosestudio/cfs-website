@@ -75,7 +75,7 @@ function Navbar() {
         </div>
 
         <motion.a
-          href="https://wa.me/8618688246482"
+          href="https://wa.me/8615627695973"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ backgroundColor: "#BFA37A", borderColor: "#BFA37A", color: "#0E0E0E" }}
@@ -208,7 +208,7 @@ function Navbar() {
                 className="mt-5"
               >
                 <a
-                  href="https://wa.me/8618688246482"
+                  href="https://wa.me/8615627695973"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMenuOpen(false)}
@@ -236,11 +236,11 @@ function Navbar() {
                   chinacfsourcing.info@gmail.com
                 </a>
                 <a
-                  href="tel:+8618688246482"
+                  href="tel:+8615627695973"
                   className="font-light hover:text-[#BFA37A] transition-colors duration-300"
                   style={{ fontSize: "10px", color: "#525250", letterSpacing: "0.02em" }}
                 >
-                  +86 186 8824 6482
+                  +86 156 2769 5973
                 </a>
               </motion.div>
 
@@ -2295,7 +2295,7 @@ function ContactSection() {
               </p>
               <div className="flex flex-col gap-3">
                 <motion.a
-                  href="tel:+8618688246482"
+                  href="tel:+8615627695973"
                   className="font-light"
                   animate={{
                     opacity: phoneHovered ? 1 : 0.75,
@@ -2311,7 +2311,7 @@ function ContactSection() {
                     letterSpacing: "0.02em",
                   }}
                 >
-                  +86 186 8824 6482
+                  +86 156 2769 5973
                 </motion.a>
                 <p
                   className="text-[#A8A8A8]"
@@ -2417,13 +2417,13 @@ function FooterSection() {
               chinacfsourcing.info@gmail.com
             </a>
             <a
-              href="tel:+8618688246482"
+              href="tel:+8615627695973"
               className="font-light transition-colors duration-300"
               style={{ fontSize: "0.73rem", letterSpacing: "0.02em", color: "#686862" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#BFA37A")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "#686862")}
             >
-              +86 186 8824 6482
+              +86 156 2769 5973
             </a>
             <p
               className="font-light"
@@ -2550,7 +2550,7 @@ export default function Home() {
             className="mt-10"
           >
             <motion.a
-              href="https://wa.me/8618688246482"
+              href="https://wa.me/8615627695973"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ backgroundColor: "#BFA37A", borderColor: "#BFA37A", color: "#0E0E0E" }}
