@@ -1331,63 +1331,25 @@ function FeaturedWork() {
   );
 }
 
-/* ── Team Data ──────────────────────────────────────────── */
-type TeamMember = {
-  id: string;
-  name: string;
-  role: string;
-  description: string;
-  detail: string;
-  src: string;
-};
-
-const TEAM: TeamMember[] = [
-  {
-    id: "wei",
-    name: "Wei Chen",
-    role: "Lead Manufacturing Director",
-    description:
-      "Oversees production across our partner factories, ensuring precision, consistency, and adherence to international quality standards.",
-    detail:
-      "18 years embedded in Foshan's manufacturing belt — Wei personally leads factory audits and mid-production reviews for every major commission.",
-    src: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=900&q=85",
-  },
-  {
-    id: "liu",
-    name: "Liu Xiaoyan",
-    role: "Materials & Quality Specialist",
-    description:
-      "Expert in sourcing premium materials — from Italian leather to engineered hardwoods — ensuring durability and finish excellence.",
-    detail:
-      "Direct relationships with tanneries, timber mills, and hardware suppliers across Europe and Asia, bringing material-level expertise to every specification.",
-    src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&q=85",
-  },
-  {
-    id: "zhang",
-    name: "Zhang Hao",
-    role: "Design Translation Expert",
-    description:
-      "Transforms architectural drawings and design briefs into production-ready furniture, maintaining design integrity at every stage.",
-    detail:
-      "Bridging design intent and factory capability — working directly alongside architects and interior designers so nothing is lost in translation.",
-    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85",
-  },
-  {
-    id: "huang",
-    name: "Huang Mei",
-    role: "Global Logistics & Export Manager",
-    description:
-      "Manages global shipping, customs clearance, and delivery coordination across UK, European, and UAE projects with full accountability.",
-    detail:
-      "Coordinating across 12+ countries — every consignment is documented, scheduled, and delivered to site on time and in perfect condition.",
-    src: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=900&q=85",
-  },
+/* ── Leadership & Team Data ──────────────────────────────── */
+const CEO_BIO = [
+  "With over 15 years of hands-on experience in the global furniture industry, Wendy Zhang has built CFS around one principle: delivering exceptional furniture solutions through trusted manufacturing, uncompromising quality, and transparent execution.",
+  "Coming from a family with more than 40 years of experience in furniture manufacturing and sourcing, she represents a legacy deeply rooted in craftsmanship, factory relationships, and international trade. This heritage gives CFS privileged access to some of China's most respected manufacturers while ensuring every project is executed with precision and care.",
+  "Under her leadership, CFS has become a trusted sourcing partner for architects, developers, hospitality brands, and private clients seeking world-class furniture solutions with complete confidence.",
 ];
 
-/* ── PeopleSection ───────────────────────────────────────── */
-function PeopleSection() {
-  const [activeId, setActiveId] = useState<string | null>(null);
+const TEAM_TEXT =
+  "Behind every successful project is a dedicated team of sourcing specialists, quality inspectors, logistics coordinators, production managers, and client relationship professionals working together to ensure every detail is delivered to the highest standard. From factory floor inspections in China to international project execution, the CFS team brings expertise, precision, and accountability to every project.";
 
+const LEADERSHIP_STATS = [
+  { value: "15+", label: "Years of Industry Experience" },
+  { value: "40+", label: "Years of Family Heritage" },
+  { value: "Global", label: "Furniture Sourcing Experts" },
+  { value: "China Based", label: "On-Ground Team" },
+];
+
+/* ── Leadership & Team ───────────────────────────────────── */
+function PeopleSection() {
   return (
     <section
       id="people"
@@ -1410,160 +1372,173 @@ function PeopleSection() {
                 lineHeight: 1.12,
               }}
             >
-              The Experts
-              <br />
-              <em style={{ fontStyle: "italic", color: "#9A9690" }}>
-                Behind Every Project
-              </em>
+              Leadership &{" "}
+              <em style={{ fontStyle: "italic", color: "#9A9690" }}>Team</em>
             </h2>
           </div>
           <p
-            className="font-light leading-[1.8] max-w-[280px] md:pb-0.5"
+            className="font-light leading-[1.8] max-w-[300px] md:pb-0.5"
             style={{
               fontSize: "clamp(10px, 1.1vw, 12px)",
               color: "#6A6A6A",
               letterSpacing: "0.02em",
             }}
           >
-            A focused team of sourcing specialists, quality experts, and
-            logistics coordinators — each embedded in their domain for over a
-            decade.
+            The people and heritage behind CFS — decades of furniture
+            expertise, trusted factory relationships, and hands-on execution
+            on the ground in China.
           </p>
         </div>
       </FadeIn>
 
-      {/* ── Team grid — compact editorial portraits ──
-          2-col from mobile, 4-col on lg.
-          Portrait pinned to max-w-[220px] so images stay editorial-small
-          regardless of column width on larger screens.               */}
-      <div className="max-w-[1400px] mx-auto mt-9 md:mt-12 grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-7 lg:gap-x-7 lg:gap-y-9">
-        {TEAM.map((member, i) => {
-          const isActive = activeId === member.id;
+      {/* ── CEO block — portrait + biography ── */}
+      <div className="max-w-[1400px] mx-auto mt-11 md:mt-14 grid md:grid-cols-12 gap-8 md:gap-11 lg:gap-16 items-start">
+        {/* Portrait */}
+        <FadeIn className="md:col-span-5 lg:col-span-4">
+          <div className="relative overflow-hidden aspect-[3/4] w-full max-w-[380px] mx-auto md:mx-0">
+            <motion.img
+              src="/team/wendy-zhang.jpeg"
+              alt="Wendy Zhang — CEO of China Furniture Sourcing (CFS)"
+              className="w-full h-full object-cover"
+              style={{
+                filter: "grayscale(100%) contrast(0.9) brightness(0.94)",
+                objectPosition: "center 18%",
+              }}
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.9, ease: EASE }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+          </div>
+        </FadeIn>
 
-          return (
-            <FadeIn key={member.id} delay={i * 0.09}>
-              <div
-                className="group cursor-pointer flex flex-col items-center"
-                onClick={() =>
-                  setActiveId((prev) => (prev === member.id ? null : member.id))
-                }
+        {/* Biography */}
+        <FadeIn delay={0.12} className="md:col-span-7 lg:col-span-8">
+          <p className="text-[8px] md:text-[9px] tracking-[0.3em] text-[#BFA37A] uppercase mb-3">
+            CEO — China Furniture Sourcing (CFS)
+          </p>
+          <h3
+            style={{
+              fontFamily: "var(--font-cormorant)",
+              fontWeight: 300,
+              fontSize: "clamp(1.55rem, 2.6vw, 2.15rem)",
+              letterSpacing: "0.04em",
+              color: "#F5F1EB",
+              lineHeight: 1.15,
+            }}
+          >
+            Wendy Zhang
+          </h3>
+          <div className="w-8 h-px bg-[#BFA37A] opacity-[0.4] mt-4 mb-5" />
+          <h4
+            className="mb-5 md:mb-6"
+            style={{
+              fontFamily: "var(--font-cormorant)",
+              fontWeight: 300,
+              fontStyle: "italic",
+              fontSize: "clamp(1.15rem, 2vw, 1.7rem)",
+              letterSpacing: "0.02em",
+              color: "#C9C3B8",
+              lineHeight: 1.3,
+            }}
+          >
+            Leading With Generations of Furniture Expertise
+          </h4>
+          <div className="space-y-4 md:space-y-5 max-w-[640px]">
+            {CEO_BIO.map((para, i) => (
+              <p
+                key={i}
+                className="font-light"
+                style={{
+                  fontSize: "clamp(12.5px, 1.05vw, 14px)",
+                  color: "#8B877F",
+                  lineHeight: 1.9,
+                  letterSpacing: "0.012em",
+                }}
               >
-                {/* ── Portrait — editorial size, face-safe ── */}
-                <div
-                  className="relative overflow-hidden aspect-[3/4] w-full"
-                  style={{ maxWidth: "220px" }}
-                >
-                  <motion.img
-                    src={member.src}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                    style={{
-                      filter:
-                        "grayscale(100%) contrast(0.9) brightness(0.94)",
-                      objectPosition: "center 12%",
-                    }}
-                    whileHover={{ scale: 1.03 }}
-                    transition={{ duration: 0.9, ease: EASE }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-                  <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.03] transition-colors duration-700" />
-                </div>
+                {para}
+              </p>
+            ))}
+          </div>
+        </FadeIn>
+      </div>
 
-                {/* ── Info — same max-width as portrait ── */}
-                <div
-                  className="w-full pt-3 md:pt-3.5"
-                  style={{ maxWidth: "220px" }}
-                >
-                  {/* Role */}
-                  <p className="text-[5.5px] tracking-[0.5em] text-[#BFA37A] uppercase mb-1.5">
-                    {member.role}
-                  </p>
+      {/* ── Team block — group photo + description ── */}
+      <div className="max-w-[1400px] mx-auto mt-14 md:mt-[76px] grid md:grid-cols-12 gap-8 md:gap-11 lg:gap-16 items-center">
+        {/* Text — left on desktop, below image on mobile */}
+        <FadeIn className="md:col-span-6 lg:col-span-5 order-2 md:order-1">
+          <h3
+            style={{
+              fontFamily: "var(--font-cormorant)",
+              fontWeight: 300,
+              fontSize: "clamp(1.55rem, 2.6vw, 2.15rem)",
+              letterSpacing: "0.04em",
+              color: "#F5F1EB",
+              lineHeight: 1.15,
+            }}
+          >
+            The CFS Team
+          </h3>
+          <div className="w-8 h-px bg-[#BFA37A] opacity-[0.4] mt-4 mb-5" />
+          <p
+            className="font-light max-w-[560px]"
+            style={{
+              fontSize: "clamp(12.5px, 1.05vw, 14px)",
+              color: "#8B877F",
+              lineHeight: 1.9,
+              letterSpacing: "0.012em",
+            }}
+          >
+            {TEAM_TEXT}
+          </p>
+        </FadeIn>
 
-                  {/* Name */}
-                  <h3
-                    className="mb-1.5"
-                    style={{
-                      fontFamily: "var(--font-cormorant)",
-                      fontWeight: 300,
-                      fontSize: "clamp(0.82rem, 1.15vw, 1.0rem)",
-                      letterSpacing: "0.04em",
-                      color: "#F5F1EB",
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    {member.name}
-                  </h3>
+        {/* Group photo — right on desktop, top on mobile */}
+        <FadeIn delay={0.12} className="md:col-span-6 lg:col-span-7 order-1 md:order-2">
+          <div className="relative overflow-hidden aspect-[4/3] w-full">
+            <motion.img
+              src="/team/cfs-team.jpeg"
+              alt="The China Furniture Sourcing (CFS) team"
+              className="w-full h-full object-cover"
+              style={{
+                filter: "grayscale(100%) contrast(0.9) brightness(0.94)",
+                objectPosition: "center 35%",
+              }}
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.9, ease: EASE }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+          </div>
+        </FadeIn>
+      </div>
 
-                  {/* Divider */}
-                  <div className="w-3.5 h-px bg-[#BFA37A] opacity-[0.22] mb-2" />
-
-                  {/* Description */}
-                  <p
-                    className="font-light"
-                    style={{
-                      fontSize: "9.5px",
-                      color: "#686868",
-                      lineHeight: 1.7,
-                      letterSpacing: "0.01em",
-                    }}
-                  >
-                    {member.description}
-                  </p>
-
-                  {/* Expandable detail */}
-                  <AnimatePresence initial={false}>
-                    {isActive && (
-                      <motion.div
-                        key={member.id + "_detail"}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{
-                          height: { duration: 0.48, ease: EASE },
-                          opacity: {
-                            duration: 0.32,
-                            delay: isActive ? 0.15 : 0,
-                          },
-                        }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pt-2">
-                          <div className="h-px bg-[#BFA37A] opacity-[0.12] mb-2" />
-                          <p
-                            style={{
-                              fontFamily: "var(--font-cormorant)",
-                              fontWeight: 300,
-                              fontStyle: "italic",
-                              fontSize: "0.78rem",
-                              lineHeight: 1.8,
-                              color: "#A8A8A8",
-                              opacity: 0.65,
-                            }}
-                          >
-                            {member.detail}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Profile toggle */}
-                  <div className="mt-2.5 flex items-center gap-2">
-                    <motion.span
-                      className="block h-px bg-[#BFA37A]"
-                      style={{ opacity: 0.3 }}
-                      animate={{ width: isActive ? 16 : 8 }}
-                      transition={{ duration: 0.38, ease: EASE }}
-                    />
-                    <span className="text-[5.5px] tracking-[0.42em] text-[#A8A8A8]/30 group-hover:text-[#A8A8A8]/55 uppercase transition-colors duration-400">
-                      {isActive ? "Close" : "Profile"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          );
-        })}
+      {/* ── Stats bar ── */}
+      <div className="max-w-[1400px] mx-auto mt-14 md:mt-[76px] pt-10 md:pt-12 border-t border-white/[0.07] grid grid-cols-2 md:grid-cols-4 gap-y-9 gap-x-8">
+        {LEADERSHIP_STATS.map((stat, i) => (
+          <FadeIn
+            key={i}
+            delay={i * 0.12}
+            className="flex flex-col items-center text-center"
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-cormorant)",
+                fontWeight: 300,
+                fontSize: "clamp(1.5rem, 2.5vw, 2.4rem)",
+                lineHeight: 1.05,
+                color: "#EDE8DF",
+                letterSpacing: "0.02em",
+                fontVariantNumeric: "lining-nums",
+                fontFeatureSettings: '"lnum" 1, "tnum" 1',
+              }}
+            >
+              {stat.value}
+            </p>
+            <div className="mt-3 w-6 h-px bg-[#BFA37A] opacity-70" />
+            <p className="mt-2.5 text-[8px] tracking-[0.22em] text-[#C4BFB7] uppercase leading-[1.6] font-semibold max-w-[150px]">
+              {stat.label}
+            </p>
+          </FadeIn>
+        ))}
       </div>
 
       <div className="absolute bottom-0 inset-x-0 h-px bg-white/[0.08]" />
