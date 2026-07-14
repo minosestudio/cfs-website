@@ -1560,34 +1560,26 @@ const TESTIMONIALS: Testimonial[] = [
   {
     id: "t1",
     quote:
-      "CFS delivered with a level of control and precision we rarely see in global sourcing. Every piece aligned perfectly with our design intent.",
-    client: "Interior Designer",
-    location: "London",
+      "After months of searching for the perfect sourcing partner, we discovered CFS. Their transparent process, detailed consultations, and flawless execution made all the difference — every piece handcrafted with true skill. Extremely professional and committed.",
+    client: "Mr. Ashok Bhati",
+    location: "India",
     src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&q=60",
   },
   {
     id: "t2",
     quote:
-      "The execution was seamless — from material selection to final delivery. It felt like working with a true manufacturing partner, not an intermediary.",
-    client: "Hospitality Developer",
-    location: "UAE",
+      "My experience with CFS was nothing short of amazing. From design to sourcing to final installation, the team was with us every step of the way. Clear pricing and a genuine, customer-first attitude made the whole process feel effortless and truly luxurious.",
+    client: "Mr. Daniel Foster",
+    location: "USA",
     src: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1400&q=60",
   },
   {
     id: "t3",
     quote:
-      "The quality exceeded expectations. The attention to detail and finishing was on par with top European brands.",
-    client: "Private Client",
-    location: "Europe",
+      "Working with CFS was smooth and well-managed from start to finish. Clear communication, professional coordination, and meticulous attention to detail stood out throughout. The entire process felt reliable, transparent, and far more efficient than we expected.",
+    client: "Mr. Omar Al Hashmi",
+    location: "Dubai, UAE",
     src: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1400&q=60",
-  },
-  {
-    id: "t4",
-    quote:
-      "Working with CFS transformed how we approach high-end residential projects. Their sourcing capabilities and quality control are simply unmatched.",
-    client: "Luxury Developer",
-    location: "Singapore",
-    src: "https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=1400&q=60",
   },
 ];
 
